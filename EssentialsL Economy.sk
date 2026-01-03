@@ -6,13 +6,13 @@
 #  CONFIG
 #=====================================================================================
 on load:
-    set {dep_check} to false #The dependency check flag. DO NOT TOUCH
+    set {dep_check} to true #The dependency check flag. DO NOT TOUCH
 #=====================================================================================
 #  AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
 #Dependency check
     if {dep_check} is true:
-        if plugin "EssentialsL" is not enabled:
+        if plugin "EssentialsL.sk" is not enabled:
             send "<yellow>[EL//Economy] <red>DISABLED -- Missing EssentialsL" to ops and console
             disable script "EssentialsL Economy"
         else:

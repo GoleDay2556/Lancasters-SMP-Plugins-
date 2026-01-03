@@ -6,4 +6,20 @@
 #  CONFIG
 #=====================================================================================
 on load:
-    set 
+    set {dep_check} to true #Dependency check
+
+#=====================================================================================
+#  AUTO LOAD, DO NOT TOUCH!
+#=====================================================================================
+#Dependency check
+    if {dep_check} is true:
+        if plugin "EssentialsL.sk" is not enabled:
+            send "<white>[<violet>EL//Transfer<white>] <red>DISABLED -- Missing EssentialsL" to ops and console
+            disable script "EssentialsL Transfer.sk"
+        else:
+            set {enabled} to true
+            broadcast "<white>[<violet>EL//Transfer<white>]  <lime>Successfully Loaded [EL//Economy]!"
+    else:
+        set {enabled} to true
+        send "<white>[<violet>EL//Transfer<white>] <red>[EL//Transfer]  was loaded without dependency check!" to ops and console
+        send "<white>[<violet>EL//Transfer<white>] <red>That may lead to bad consequences..." to ops and console

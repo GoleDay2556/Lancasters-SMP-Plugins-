@@ -14,7 +14,7 @@ on load:
     if {dep_check} is true:
         if plugin "EssentialsL.sk" is not enabled:
             send "<yellow>[EL//Economy] <red>DISABLED -- Missing EssentialsL" to ops and console
-            disable script "EssentialsL Economy"
+            disable script "EssentialsL Economy.sk"
         else:
             set {enabled} to true
             broadcast "<cyan>[EL//Economy] <lime>Successfully Loaded [EL//Economy]!"

@@ -21,7 +21,7 @@ on load:
     else:
         set {enabled} to true
         send "<yellow>[EL//Economy] <red>[EL//Economy] was loaded without dependency check!" to ops and console
-        send "<yellow>[EL//Economy] <red>That may lead to bad consequences..." to ops and console
+        send "<yellow>[EL//Economy] <red>That may lead to bad consequences.." to ops and console
 #Load Content  
 
 

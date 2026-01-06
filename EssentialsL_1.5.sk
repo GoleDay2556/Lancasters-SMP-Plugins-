@@ -61,7 +61,7 @@ on load:
 
 #Transfer
     if {dep_check_transfer} is true:
-        if plugin "Skungee-2.0.0-BETA-5" is enabled:
+        if plugin "Skungee" is enabled:
             set {enabled_transfer} to true
             send "<white>[<pink>Transfer<white>] <lime>Successfully Loaded Transfer" to ops and console
         

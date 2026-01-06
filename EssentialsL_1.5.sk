@@ -56,8 +56,8 @@ on load:
 
     else:
         set {enabled_economy} to true
-        send a fatal error "<white>[<green>Economy<white>] <red>[Economy] was loaded without dependency check!" to console
-        send a fatal error "<white>[<green>Economy<white>] <red>That may lead to bad consequences..." to console
+        send "<white>[<green>Economy<white>] <red>[Economy] was loaded without dependency check!" to console
+        send "<white>[<green>Economy<white>] <red>That may lead to bad consequences..." to console
 
 #Transfer
     if {dep_check_transfer} is true:
@@ -71,8 +71,8 @@ on load:
 
     else if {dep_check_transfer} is false:
         set {enabled_transfer} to true
-        send a fatal error "<white>[<pink>Transfer<white>] <red>[EL//Transfer] was loaded without dependency check!" to console
-        send a fatal error "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to console
+        send "<white>[<pink>Transfer<white>] <red>[EL//Transfer] was loaded without dependency check!" to console
+        send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to console
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |

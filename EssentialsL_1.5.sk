@@ -47,7 +47,7 @@ on load:
     send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
     send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
     send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__" to console
-    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL!" to ops and console
+    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL!" to console
 
 #Economy
     if {dep_check_economy} is true:
@@ -71,7 +71,7 @@ on load:
 
     else if {dep_check_transfer} is false:
         set {enabled_transfer} to true
-        send "<white>[<pink>Transfer<white>] <red>[EL//Transfer] was loaded without dependency check!" to console
+        send "<white>[<pink>Transfer<white>] <red>[Transfer] was loaded without dependency check!" to console
         send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to console
 
 #+-----------------------------------------------------------------------------------+
@@ -403,15 +403,6 @@ on damage of player:
             cancel event
 
     
-
-
-
-
-
-
-
-
-        
 
 
 #=====================================================================================
@@ -854,7 +845,7 @@ command /daily:
                     send "<white>[<cyan>EssentialsL<white>] <lime>Come back in %{_remaining}%."
                     stop
 
-            add 500 to {money::%{_uuid}%}
+            add 50 to {money::%{_uuid}%}
             set {daily::%{_uuid}%} to now
 
             send "<green>You received 500L$ as your daily reward!"
@@ -886,7 +877,7 @@ command /clearmoney <player> <integer>:
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |
-#|   Transfer                                                                        |
+#|   Transfer    (fur)                                                                    |
 #|                                                                                   |
 #+-----------------------------------------------------------------------------------+
 

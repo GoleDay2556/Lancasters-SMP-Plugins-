@@ -75,19 +75,7 @@ on load:
         send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to ops and console
 
 
-#Changed
-    if {dep_check_changed} is true:
-        if plugin "skinsrestorer" is disabled:
-            set {enabled_changed} to false
-            send "<white>[<gray>Changed<white>] <red>DISABLED- Missing 'SkinsRestorer' Plugin" to ops and console 
-        else:
-            send "<white>[<gray>Changed<white>] <lime>Successfully Loaded Changed" to ops and console
-            set {enabled_changed} to true
 
-    else if {dep_check_changed} is false:                      
-        send "<white>[<gray>Changed<white>] <red>[Changed] was loaded without dependency check!" to ops and console
-        send "<white>[<gray>Changed<white>] <red>That may lead to bad consequences..." to ops and console         
-        set {enabled_changed} to true
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |

@@ -16,7 +16,7 @@
 on load:
     set {dep_check_economy} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_transfer} to true #The dependency check flag. DO NOT TOUCH
-    set {dep_check_changed} to true #The dependency check flag. DO NOT TOUCH
+    set {dep_check_auth} to true #The dependency check flag. DO NOT TOUCH
     set {version} to "V 2.0"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
@@ -48,8 +48,7 @@ on load:
     send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
     send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
     send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__" to console
-    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL!" to console
-
+    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{version}%" to ops and console
 #Economy
     if {dep_check_economy} is true:
         set {enabled_economy} to true
@@ -74,20 +73,20 @@ on load:
         send "<white>[<pink>Transfer<white>] <red>[Transfer] was loaded without dependency check!" to ops and console
         send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to ops and console
 
+#Auth
+if {dep_check_auth} is true:
+        if plugin "skript-yaml" is enabled:
+            set {enabled_transfer} to true
+            send "<white>[<red>Auth<white>] <lime>Successfully Loaded Auth" to ops and console
+        
+            send "<white>[<red>Auth<white>] <red>DISABLED- Missing 'skript-yaml' Plugin" to ops and console
+            set {enabled_transfer} to false        
 
-#Changed
-    if {dep_check_changed} is true:
-        if plugin "skinsrestorer" is disabled:
-            set {enabled_changed} to false
-            send "<white>[<gray>Changed<white>] <red>DISABLED- Missing 'SkinsRestorer' Plugin" to ops and console 
-        else:
-            send "<white>[<gray>Changed<white>] <lime>Successfully Loaded Changed" to ops and console
-            set {enabled_changed} to true
+    else if {dep_check_transfer} is false:
+        set {enabled_transfer} to true
+        send "<white>[<red>Auth<white>] <red>[Auth] was loaded without dependency check!" to ops and console
+        send "<white>[<red>Auth<white>] <red>That may lead to bad consequences..." to ops and console
 
-    else if {dep_check_changed} is false:                      
-        send "<white>[<gray>Changed<white>] <red>[Changed] was loaded without dependency check!" to ops and console
-        send "<white>[<gray>Changed<white>] <red>That may lead to bad consequences..." to ops and console         
-        set {enabled_changed} to true
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |

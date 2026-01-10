@@ -7,21 +7,21 @@ on load:
     set {white_url} to "https://minesk.in/447975d4c4984821bad7be9b3a6be02f"  
     set {shork_url} to "https://minesk.in/1fd9ab83005b46e6a9acbe25a519abe9"
     set {snep_url} to "https://minesk.in/d447ffb9336544fc9d7b00d1aa58d481"
+    set {version} to "1.0"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
 on load:
     wait 1 tick
-    if script "EssentialsL_2.0" is not loaded:
+    if script "EssentialsL" is not loaded:
         send "<white>[<gray>Changed<white>]<red>DISABLED — Missing EssentialsL 2.0!" to all ops and console
-        disable script "ChangedPlugin"
+        disable script "Changed_%{version}%"
 
     else if plugin "SkinsRestorer" is not enabled:
         send "<white>[<gray>Changed<white>]<red>DISABLED — Missing SkrinsRestorer!" to all ops and console
-        disable script "ChangedPlugin"
+        disable script "Changed_%{version}%"
 
-    else:
-        send "<grey>[ChnagedPlugin] <lime>Successfully Loaded [ChnagedPlugin]! Code: 83undjnucdpyrpfg" to all ops and console
+
 
 
 #=====================================================================================
@@ -29,13 +29,13 @@ on load:
 #=====================================================================================
 command /transfur:
     usage: /transfur <black|white|shork|snep>
-    cooldown: 0 seconds
+    cooldown: 10 seconds
     aliases: /trnsf
     executable by: players
     trigger:
         trnsf_type(player)
 
-command untransfur:
+command /untransfur:
     usage: /untransfur
     cooldown: 0 seconds
     aliases: /untf

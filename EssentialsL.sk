@@ -8,7 +8,7 @@
 #      _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________  
 #       _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_ 
 #        _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__
-#V 2.0
+#V 2.5
 
 #=====================================================================================
 #  CONFIG
@@ -17,26 +17,26 @@ on load:
     set {dep_check_economy} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_transfer} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_auth} to true #The dependency check flag. DO NOT TOUCH
-    set {version} to "V 2.0"
+    set {version} to "V 2.5"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
 #EssentialsL
     execute console command "team add PLAYER"
     execute console command "team modify PLAYER color aqua"
-    execute console command "team modify PLAYER suffix _PLAYER_"
+    execute console command "team modify PLAYER prefix PLAYER_"
 
     execute console command "team add ADMIN"
     execute console command "team modify ADMIN color dark_red"
-    execute console command "team modify ADMIN suffix _ADMIN_"
+    execute console command "team modify ADMIN prefix ADMIN_"
 
     execute console command "team add AFK"
     execute console command "team modify AFK color green"
-    execute console command "team modify AFK suffix _AFK_"
+    execute console command "team modify AFK prefix AFK_"
 
     execute console command "team add MODERATOR"
     execute console command "team modify MODERATOR color red"
-    execute console command "team modify MODERATOR suffix _MOD_"
+    execute console command "team modify MODERATOR prefix MODERATOR_"
     
     wait 1 second
     send "[EssentialsL] __/\\\\\\\\\\\\\\\____________________________________________________________________________________________/\\\\\\__________________/\\\_____________" to console
@@ -56,15 +56,15 @@ on load:
 
     else:
         set {enabled_economy} to true
-        send "<white>[<green>Economy<white>] <red>[Economy] was loaded without dependency check!" to console
-        send "<white>[<green>Economy<white>] <red>That may lead to bad consequences..." to console
+        send "<white>[<green>Economy<white>] <red>[Economy] was loaded without dependency check!" to ops and console
+        send "<white>[<green>Economy<white>] <red>That may lead to bad consequences..." to ops and console
 
 #Transfer
     if {dep_check_transfer} is true:
         if plugin "Skungee" is enabled:
             set {enabled_transfer} to true
             send "<white>[<pink>Transfer<white>] <lime>Successfully Loaded Transfer" to ops and console
-        
+        else:
             send "<white>[<pink>Transfer<white>] <red>DISABLED- Missing 'SkungeeVelocity' Plugin" to ops and console
             set {enabled_transfer} to false        
 
@@ -74,18 +74,19 @@ on load:
         send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to ops and console
 
 #Auth
-if {dep_check_auth} is true:
+on load:
+    if {dep_check_auth} is true:
         if plugin "skript-yaml" is enabled:
-            set {enabled_transfer} to true
-            send "<white>[<red>Auth<white>] <lime>Successfully Loaded Auth" to ops and console
-        
-            send "<white>[<red>Auth<white>] <red>DISABLED- Missing 'skript-yaml' Plugin" to ops and console
-            set {enabled_transfer} to false        
+            set {enabled_auth} to true
+            send "<white>[<red>Auth<white>] <lime>Successfully loaded Auth" to ops and console
+        else:
+            set {enabled_auth} to false
+            send "<white>[<red>Auth<white>] <red>DISABLED - Missing 'skript-yaml' Plugin" to ops and console
+    else:
+        set {enabled_auth} to true
+        send "<white>[<red>Auth<white>] <yellow>Loaded without dependency check!" to ops and console
+        send "<white>[<red>Auth<white>] <red>This may lead to bad consequences..." to ops and console
 
-    else if {dep_check_transfer} is false:
-        set {enabled_transfer} to true
-        send "<white>[<red>Auth<white>] <red>[Auth] was loaded without dependency check!" to ops and console
-        send "<white>[<red>Auth<white>] <red>That may lead to bad consequences..." to ops and console
 
 
 #+-----------------------------------------------------------------------------------+
@@ -745,9 +746,13 @@ on player move:
             broadcast "<white>[<cyan>EssentialsL<white>] <yellow>%player% is no longer AFK."
             execute console command "team leave AFK %player%"
 
-            if player is op:
+            if name of player is "Dimonium_":
                 set {_team_admin} to true
                 execute console command "team join ADMIN %player%"
+
+            else if player is op:
+                set {_team_moderator} to true
+                execute console command "team join MODERATOR %player%"
 
             else:
                 set {_team_player} to true
@@ -762,9 +767,13 @@ on chat:
         broadcast "<white>[<cyan>EssentialsL<white>] <yellow>%player% is no longer AFK."
         execute console command "team leave AFK %player%"
 
-        if player is op:
+        if name of player is "Dimontium_":
             set {_team_admin} to true
             execute console command "team join ADMIN %player%"
+
+        else if player is op:
+            set {_team_moderator} to true
+            execute console command "team join MODERATOR %player%"
 
         else:
             set {_team_player} to true
@@ -789,7 +798,7 @@ on join:
 
     execute console command "team leave %player%"
 
-    if name of player is "Gole_Day2556":
+    if name of player is "Dimonium_":
         execute console command "team join ADMIN %player%"
         send "<lime>Welcome back, <red><bold>Operator" to player
         stop
@@ -798,8 +807,9 @@ on join:
         execute console command "team join MODERATOR %player%"
         send "<lime>Welcome back, <red><bold>Moderator" to player
         stop
-    execute console command "team join PLAYER %player%"
-    send "<lime>Welcome back, <cyan><bold>%player%" to player
+    else:
+        execute console command "team join PLAYER %player%"
+        send "<lime>Welcome back, <cyan><bold>%player%" to player
 
 
 
@@ -887,7 +897,7 @@ command /clearmoney <player> <integer>:
     permission: op
     trigger:
         remove arg-2 from {money::%uuid of arg-1%}       
-        send "<white>[<cyan>EssentialsL<white>] <red>You lost %arg-2%L$"
+        send "<white>[<cyan>EssentialsL<white>] <red>You lost %arg-2%L$" to arg-1
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |
@@ -946,3 +956,128 @@ command /anarchy:
         send title "<red>Saving..." with subtitle "<yellow>Player has been transitioned to server 'SMP_2'"
         connect player to server "smp_2"  
 
+#+-----------------------------------------------------------------------------------+
+#|                                                                                   |
+#|   Auth                                                                            |
+#|                                                                                   |
+#+-----------------------------------------------------------------------------------+
+
+command /register <text> <text>:
+    trigger:
+        if {enabled_auth} is not true:
+            stop
+
+        if {username::%uuid of player%} is set:
+            send "<red>You are already registered!" to player
+            stop
+
+        set {username::%uuid of player%} to arg-1
+        set {password::%uuid of player%} to arg-2
+        set {register::%uuid of player%} to true
+        set {logged_in::%uuid of player%} to false
+
+        send "<white>[<red>Auth<white>] <green>You have been registered! Use /login <username> <password>" to player
+
+
+command /login <text> <text>:
+    trigger:
+        if {username::%uuid of player%} is not set:
+            send "<white>[<red>Auth<white>] <red>You are not registered! Use /register <username> <password>" to player
+            stop
+
+        if {logged_in::%uuid of player%} is true:
+            send "<yellow>You are already logged in!" to player
+            stop
+
+        if arg-1 is not {username::%uuid of player%}:
+            send "<red>Wrong username!" to player
+            stop
+
+        if arg-2 is not {password::%uuid of player%}:
+            send "<red>Wrong password!" to player
+            stop
+
+        set {logged_in::%uuid of player%} to true
+        send "<green>Successfully logged in!" to player
+        send title "<green>Successfully logged in" to player
+        send "<white>[<red>Auth<white>] %player% has logged in" to console
+
+
+command /logout:
+    trigger:
+        send title "<green>Please wait..."
+        wait 2 second
+        send title "<green>5" with subtitle "<yellow>Logging out..."
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<green>4" with subtitle "<yellow>Logging out..."
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<yellow>3" with subtitle "<yellow>Logging out..."
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<red>2" with subtitle "<yellow>Logging out..."
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<red>1" with subtitle "<yellow>Logging out..."
+        play sound "block.note_block.pling" to player
+        wait 0.5 seconds
+        send title "<red>Saving..." with subtitle "<yellow>Logged out"
+        play sound "block.note_block.pling" to player
+        wait 0.5 seconds
+        set {logged_in::%uuid of player%} to false
+        kick player due to "<bold><green>You have been logged out of the system"
+        send "<white>[<red>Auth<white>] %player% has logged out" to console
+
+command /unregister:
+    trigger:
+        send title "<green>Please wait..."
+        wait 2 second
+        send title "<green>5" with subtitle "<yellow>Unregistering"
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<green>4" with subtitle "<yellow>Unregistering"
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<yellow>3" with subtitle "<yellow>Unregistering"
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<red>2" with subtitle "<yellow>Unregistering"
+        play sound "block.note_block.pling" to player
+        wait 1 second
+        send title "<red>1" with subtitle "<yellow>Unregistering"
+        play sound "block.note_block.pling" to player
+        wait 0.5 seconds
+        send title "<red>Saving..." with subtitle "<yellow>Unregistered"
+        play sound "block.note_block.pling" to player 
+        wait 0.5 seconds
+        delete {username::%uuid of player%}
+        set {register::%uuid of player%} to false
+        set {logged_in::%uuid of player%} to false
+        kick player due to "<bold><red>You have been unregistered out of the system"
+        send "<white>[<red>Auth<white>] %player% has unregistered" to console
+
+
+on player move:
+    if {register::%uuid of player%} is false:
+        send title "<yellow>Type /register" to player
+        cancel event     
+    else if {logged_in::%uuid of player%} is false:
+        send title "<green>Type /login" to player
+        cancel event
+  
+
+on quit:
+    set {_uuid} to uuid of player
+    set {_name} to name of player
+    wait 5 minutes
+    if {_uuid} is offline: 
+
+        set {logged_in::%{_uuid}%} to false
+        send "<white>[<red>Auth<white>] %{_name}% has logged out" to console
+
+
+#End of the file
+#====================================================================================
+#Authors: Dimonium_ (Dima), Kainoob23 (Niilo)
+#====================================================================================

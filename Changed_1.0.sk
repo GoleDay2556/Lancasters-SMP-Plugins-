@@ -7,7 +7,7 @@ on load:
     set {white_url} to "https://minesk.in/447975d4c4984821bad7be9b3a6be02f"  
     set {shork_url} to "https://minesk.in/1fd9ab83005b46e6a9acbe25a519abe9"
     set {snep_url} to "https://minesk.in/d447ffb9336544fc9d7b00d1aa58d481"
-    set {version} to "1.0"
+    set {version} to "1.0 BETA"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================

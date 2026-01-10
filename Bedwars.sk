@@ -71,7 +71,7 @@ command /setpoint <text> <integer>:
 #=====================================================================================
 # PLAYER COMMANDS
 #=====================================================================================
-command /gamestart:
+command /bw start:
     executable by: players
     trigger:
         set {_points::1} to {spawn1}

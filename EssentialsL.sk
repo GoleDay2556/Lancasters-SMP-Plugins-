@@ -8,7 +8,7 @@
 #      _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________  
 #       _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_ 
 #        _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__
-#V 2.7
+#V 3.0
 
 #=====================================================================================
 #  CONFIG
@@ -17,7 +17,7 @@ on load:
     set {dep_check_economy} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_transfer} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_auth} to true #The dependency check flag. DO NOT TOUCH
-    set {version} to "V 2.7 pre release"
+    set {version} to "V 3.0"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
@@ -833,6 +833,7 @@ function control_panel_0(p: player):
     set slot 4 of {_gui0} to oak sign named "<bold>/kys"
     set slot 6 of {_gui0} to oak sign named "<bold>Teams"
     set slot 40 of {_gui0} to gray stained glass pane named " "
+    set slot 44 of {_gui0} to gray carpet named "Main Page"
 
     if {home} is true:
         set slot 9 of {_gui0} to lime concrete named "<green>ON"
@@ -858,7 +859,7 @@ function control_panel_0(p: player):
         set slot 39 of {_gui0} to lime concrete named "<green>ON"
     else:
         set slot 41 of {_gui0} to red concrete named "<red>OFF"
-
+    
 
     open {_gui0} to {_p}
 #Page 1
@@ -870,6 +871,7 @@ function control_panel_1(p: player):
     set slot 10 of {_gui1} to yellow concrete named "<yellow>Reload"
     set slot 16 of {_gui1} to player head named "<yellow>Online players: %online player count%"
     set slot 28 of {_gui1} to red concrete named "<red>Kick every player"
+    set slot 36 of {_gui1} to gray carpet named "To feature panel"
     
 
     open {_gui1} to {_p}
@@ -889,6 +891,10 @@ on inventory click:
     if clicked slot is 28:
         if player is not op:
             kick all players
+    
+    if clicked slot is 36:
+        close player's inventory
+        control_panel_0(player)
 
 on inventory click:
     if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel":
@@ -963,7 +969,7 @@ on inventory click:
         set {kys} to true
         set {afk} to true
         set {teams} to true
-        set slot 39 of {_gui0} to lime concrete named "<green>ON"
+        set slot 39 of {_gui0} to lime concrete named "<red>OFF"
         set slot 41 of {_gui0} to light gray stained glass pane named " "
         close player's inventory
         control_panel_0(player)
@@ -979,8 +985,10 @@ on inventory click:
         close player's inventory
         control_panel_0(player)
 
-
-
+    #Change Page
+    if clicked slot is 44:
+        close player's inventory
+        control_panel_1(player)
 
 
 
@@ -1057,7 +1065,7 @@ command /daily:
 
 
 #=====================================================================================
-#  CONTROL COMMANDS
+#  ADMIN COMMANDS
 #=====================================================================================
 #Give Money
 command /givemoney <player> <integer>:

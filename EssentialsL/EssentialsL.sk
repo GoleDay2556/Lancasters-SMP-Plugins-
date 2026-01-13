@@ -8,15 +8,13 @@
 #      _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________  
 #       _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_ 
 #        _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__
-#V 3.0
+#V 3.5
 
 #=====================================================================================
 #  CONFIG
 #=====================================================================================
 on load:
-    set {dep_check_economy} to true #The dependency check flag. DO NOT TOUCH
     set {dep_check_transfer} to true #The dependency check flag. DO NOT TOUCH
-    set {dep_check_auth} to true #The dependency check flag. DO NOT TOUCH
     set {version} to "V 3.0"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
@@ -48,51 +46,7 @@ on load:
     send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
     send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__" to console
     send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{version}%" to ops and console
-#Economy
-    if {dep_check_economy} is true:
-        set {enabled_economy} to true
-        wait 1 second
-        send "<white>[<green>Economy<white>] <lime>Successfully Loaded Economy" to ops and console
 
-    else:
-        set {enabled_economy} to true
-        wait 1 second
-        send "<white>[<green>Economy<white>] <red>[Economy] was loaded without dependency check!" to ops and console
-        send "<white>[<green>Economy<white>] <red>That may lead to bad consequences..." to ops and console
-
-#Transfer
-    if {dep_check_transfer} is true:
-        if plugin "Skungee" is enabled:
-            set {enabled_transfer} to true
-            wait 1 second
-            send "<white>[<pink>Transfer<white>] <lime>Successfully Loaded Transfer" to ops and console
-        else:
-            wait 1 second
-            send "<white>[<pink>Transfer<white>] <red>DISABLED- Missing 'SkungeeVelocity' Plugin" to ops and console
-            set {enabled_transfer} to false        
-
-    else if {dep_check_transfer} is false:
-        set {enabled_transfer} to true
-        wait 1 second
-        send "<white>[<pink>Transfer<white>] <red>[Transfer] was loaded without dependency check!" to ops and console
-        send "<white>[<pink>Transfer<white>] <red>That may lead to bad consequences..." to ops and console
-
-#Auth
-on load:
-    if {dep_check_auth} is true:
-        if plugin "skript-yaml" is enabled:
-            set {enabled_auth} to true
-            wait 1 second
-            send "<white>[<red>Auth<white>] <lime>Successfully loaded Auth" to ops and console
-        else:
-            set {enabled_auth} to false
-            wait 1 second
-            send "<white>[<red>Auth<white>] <red>DISABLED - Missing 'skript-yaml' Plugin" to ops and console
-    else:
-        set {enabled_auth} to true
-        wait 1 second
-        send "<white>[<red>Auth<white>] <yellow>Loaded without dependency check!" to ops and console
-        send "<white>[<red>Auth<white>] <red>This may lead to bad consequences..." to ops and console
 
 
 
@@ -137,6 +91,9 @@ command /feature <text> [<text>]:
             else if arg-2 is "daily":
                 set {daily} to true
                 broadcast "<white>[<cyan>EssentialsL<white>] <lime>Enabled daily feature"
+            else if arg-2 is "auth":
+                set {auth} to true
+                broadcast "<white>[<cyan>EssentialsL<white>] <lime>Enabled auth Script"
             else if arg-2 is "all":
                 set {music} to true
                 set {home} to true
@@ -146,6 +103,7 @@ command /feature <text> [<text>]:
                 set {balance} to true
                 set {money-send} to true
                 set {daily} to true
+                set {auth} to true
                 broadcast "<white>[<cyan>EssentialsL<white>] <lime>Enabled all features"
 
         else if arg-1 is "disable":
@@ -173,6 +131,9 @@ command /feature <text> [<text>]:
             else if arg-2 is "daily":
                 set {daily} to false
                 broadcast "<white>[<cyan>EssentialsL<white>] <lime>Disabled daily feature"
+            else if arg-2 is "auth":
+                set {auth} to false
+                broadcast "<white>[<cyan>EssentialsL<white>] <red>Disabled auth Script"
             else if arg-2 is "all":
                 set {music} to false
                 set {home} to false
@@ -182,6 +143,7 @@ command /feature <text> [<text>]:
                 set {balance} to false
                 set {money-send} to false
                 set {daily} to false
+                set {auth} to false
                 broadcast "<white>[<cyan>EssentialsL<white>] <red>Disabled all features"
 
 # Ban Player
@@ -1151,125 +1113,7 @@ command /anarchy:
         send title "<red>Saving..." with subtitle "<yellow>Player has been transitioned to server 'SMP_2'"
         connect player to server "smp_2"  
 
-#+-----------------------------------------------------------------------------------+
-#|                                                                                   |
-#|   Auth                                                                            |
-#|                                                                                   |
-#+-----------------------------------------------------------------------------------+
 
-command /register <text> <text>:
-    trigger:
-        if {enabled_auth} is not true:
-            stop
-
-        if {username::%uuid of player%} is set:
-            send "<red>You are already registered!" to player
-            stop
-
-        set {username::%uuid of player%} to arg-1
-        set {password::%uuid of player%} to arg-2
-        set {register::%uuid of player%} to true
-        set {logged_in::%uuid of player%} to false
-
-        send "<white>[<red>Auth<white>] <green>You have been registered! Use /login <username> <password>" to player
-
-
-command /login <text> <text>:
-    trigger:
-        if {username::%uuid of player%} is not set:
-            send "<white>[<red>Auth<white>] <red>You are not registered! Use /register <username> <password>" to player
-            stop
-
-        if {logged_in::%uuid of player%} is true:
-            send "<yellow>You are already logged in!" to player
-            stop
-
-        if arg-1 is not {username::%uuid of player%}:
-            send "<red>Wrong username!" to player
-            stop
-
-        if arg-2 is not {password::%uuid of player%}:
-            send "<red>Wrong password!" to player
-            stop
-
-        set {logged_in::%uuid of player%} to true
-        send "<green>Successfully logged in!" to player
-        send title "<green>Successfully logged in" to player
-        send "<white>[<red>Auth<white>] %player% has logged in" to console
-
-
-command /logout:
-    trigger:
-        send title "<green>Please wait..."
-        wait 2 second
-        send title "<green>5" with subtitle "<yellow>Logging out..."
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<green>4" with subtitle "<yellow>Logging out..."
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<yellow>3" with subtitle "<yellow>Logging out..."
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<red>2" with subtitle "<yellow>Logging out..."
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<red>1" with subtitle "<yellow>Logging out..."
-        play sound "block.note_block.pling" to player
-        wait 0.5 seconds
-        send title "<red>Saving..." with subtitle "<yellow>Logged out"
-        play sound "block.note_block.pling" to player
-        wait 0.5 seconds
-        set {logged_in::%uuid of player%} to false
-        kick player due to "<bold><green>You have been logged out of the system"
-        send "<white>[<red>Auth<white>] %player% has logged out" to console
-
-command /unregister:
-    trigger:
-        send title "<green>Please wait..."
-        wait 2 second
-        send title "<green>5" with subtitle "<yellow>Unregistering"
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<green>4" with subtitle "<yellow>Unregistering"
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<yellow>3" with subtitle "<yellow>Unregistering"
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<red>2" with subtitle "<yellow>Unregistering"
-        play sound "block.note_block.pling" to player
-        wait 1 second
-        send title "<red>1" with subtitle "<yellow>Unregistering"
-        play sound "block.note_block.pling" to player
-        wait 0.5 seconds
-        send title "<red>Saving..." with subtitle "<yellow>Unregistered"
-        play sound "block.note_block.pling" to player 
-        wait 0.5 seconds
-        delete {username::%uuid of player%}
-        set {register::%uuid of player%} to false
-        set {logged_in::%uuid of player%} to false
-        kick player due to "<bold><red>You have been unregistered out of the system"
-        send "<white>[<red>Auth<white>] %player% has unregistered" to console
-
-
-on player move:
-    if {register::%uuid of player%} is false:
-        send title "<yellow>Type /register" to player
-        cancel event     
-    else if {logged_in::%uuid of player%} is false:
-        send title "<green>Type /login" to player
-        cancel event
-  
-
-on quit:
-    set {_uuid} to uuid of player
-    set {_name} to name of player
-    wait 5 minutes
-    if {_uuid} is offline: 
-
-        set {logged_in::%{_uuid}%} to false
-        send "<white>[<red>Auth<white>] %{_name}% has logged out" to console
 
 
 #End of the file

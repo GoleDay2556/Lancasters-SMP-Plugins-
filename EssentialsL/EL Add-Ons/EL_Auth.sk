@@ -8,6 +8,13 @@ on load:
     if script "EssentialsL.sk" is loaded:
         if plugin "skript-yaml" is enabled:
             wait 1 second
+        
+        
+        else:
+            set {auth} to false
+            wait 1 second
+            send "<white>[<red>Auth<white>] <red>DISABLED - Unknown Critical Error Occured {CE1}" to ops and console
+            disable script "EL_Auth.sk"
             send "<white>[<red>Auth<white>] <lime>Successfully loaded Auth" to ops and console
     else:
         set {auth} to false

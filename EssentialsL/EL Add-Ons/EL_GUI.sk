@@ -1,0 +1,210 @@
+#+-----------------------------------------------------------------------------------+
+#|                                                                                   |
+#|   GUI                                                                             |
+#|                                                                                   |
+#+-----------------------------------------------------------------------------------+
+#=====================================================================================
+#   DEP CHECK
+#=====================================================================================
+on load:
+    if script "EssentialsL.sk" is loaded:
+        wait 1 second
+        send "<white>[<purple>GUI<white>] <lime>Successfully loaded GUI" to ops and console
+    else:
+        set {gui} to true
+        wait 1 second
+        send "<white>[<purple>GUI<white>] <red>DISABLED - Unknown Critical Error Occured {CE1}" to ops and console
+        disable script "EL_GUI.sk"
+
+#=====================================================================================
+#  ADMIN COMMANDS
+#=====================================================================================
+#Page 0
+function control_panel_1(p: player):
+    set {_gui0} to chest inventory with 6 rows named "<white>[<cyan>EssentialsL<white>] Admin Panel (Page 1)"
+
+    loop integers from 0 to 53:
+        set slot loop-integer of {_gui0} to black stained glass pane named " "
+
+
+    set slot 0 of {_gui0} to oak sign named "<bold>/home"
+    set slot 2 of {_gui0} to oak sign named "<bold>/music"
+    set slot 4 of {_gui0} to oak sign named "<bold>/kys"
+    set slot 6 of {_gui0} to oak sign named "<bold>Teams"
+    set slot 8 of {_gui0} to oak sign named "<bold>/afk"
+    set slot 40 of {_gui0} to light gray stained glass pane named " "
+    set slot 44 of {_gui0} to gray carpet named "Main Page"
+
+    if {home} is true:
+        set slot 9 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 18 of {_gui0} to red concrete named "<red>OFF"
+
+    if {music} is true:
+        set slot 11 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 20 of {_gui0} to red concrete named "<red>OFF"
+
+    if {kys} is true:
+        set slot 13 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 22 of {_gui0} to red concrete named "<red>OFF"
+
+    if {teams} is true:
+        set slot 15 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 24 of {_gui0} to red concrete named "<red>OFF"
+
+    if {afk} is true:
+        set slot 17 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 26 of {_gui0} to red concrete named "<red>OFF"
+
+    if {home} and {music} and {kys} and {teams} are true:
+        set slot 39 of {_gui0} to lime concrete named "<green>ON"
+    else:
+        set slot 41 of {_gui0} to red concrete named "<red>OFF"
+    
+
+    open {_gui0} to {_p}
+
+#Page 1
+function control_panel_1(p: player):
+    set {_gui1} to chest inventory with 6 rows named "<white>[<cyan>EssentialsL<white>] Admin Panel (Main Page)"
+    loop integers from 0 to 26:
+        set slot loop-integer of {_gui1} to light gray stained glass pane named " "
+    
+
+    loop integers from 27 to 53:
+        set slot loop-integer of {_gui1} to black stained glass pane named " "
+
+    set slot 10 of {_gui1} to yellow concrete named "<yellow>Reload"
+    set slot 16 of {_gui1} to player head named "<yellow>Online players: %online player count%"
+    set slot 25 of {_gui1} to red concrete named "<red>Kick every player"
+    set slot 36 of {_gui1} to gray carpet named "To feature panel"
+    set slot 37 of {_gui1} to red concrete named "<red>Restart"
+    set slot 39 of {_gui1} to red concrete named "<red>Stop"
+
+    open {_gui1} to {_p}
+#=====================================================================================
+#  LOGIC
+#=====================================================================================
+#Main Page
+on inventory click:
+    if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel (Main Page)":
+        if clicked inventory is player's inventory:
+            stop
+        cancel event
+
+        if clicked slot is 10:
+            execute player command "essentialsl/reload"
+
+        if clicked slot is 25:
+            if player is not op:
+                loop all players:
+                    kick loop-player
+
+        if clicked slot is 36:
+            close player's inventory
+            control_panel_0(player)
+
+        if clicked slot is 37:
+            restart the server
+
+        if clicked slot is 39:
+            stop server
+#Feature page 1
+on inventory click:
+    if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel (Page 1)":
+        if clicked inventory is player's inventory:
+            stop
+        cancel event
+
+        # Home
+        if clicked slot is 9:
+            set {home} to false
+            close player's inventory
+            control_panel_1
+            (player)
+
+        if clicked slot is 18:
+            set {home} to true
+            close player's inventory
+            control_panel_1(player)
+
+        # Music
+        if clicked slot is 11:
+            set {music} to false
+            close player's inventory
+            control_panel_1(player)
+
+        if clicked slot is 20:
+            set {music} to true
+            close player's inventory
+            control_panel_1(player)
+
+        # Kys
+        if clicked slot is 13:
+            set {kys} to false
+            close player's inventory
+            control_panel_1(player)
+
+        if clicked slot is 22:
+            set {kys} to true
+            close player's inventory
+            control_panel_1(player)
+
+        # Teams
+        if clicked slot is 15:
+            set {teams} to false
+            close player's inventory
+            control_panel_1(player)
+
+        if clicked slot is 24:
+            set {teams} to true
+            close player's inventory
+            control_panel_1(player)
+
+        # Afk
+        if clicked slot is 17:
+            set {afk} to false
+            close player's inventory
+            control_panel_1(player)
+
+        if clicked slot is 26:
+            set {afk} to true
+            close player's inventory
+            control_panel_1(player)
+
+        # Global
+        if clicked slot is 41:
+            set {music} to true
+            set {home} to true
+            set {kys} to true
+            set {afk} to true
+            set {teams} to true
+            close player's inventory
+            control_panel_1(player)
+
+        else if clicked slot is 39:
+            set {music} to false
+            set {home} to false
+            set {kys} to false
+            set {afk} to false
+            set {teams} to false
+            close player's inventory
+            control_panel_1(player)
+
+        # Change Page
+        if clicked slot is 44:
+            close player's inventory
+            control_panel_1(player)
+
+
+
+#=====================================================================================
+#  ADMIN COMMANDS
+#=====================================================================================
+command panel:
+    trigger:
+        control_panel_1(player)

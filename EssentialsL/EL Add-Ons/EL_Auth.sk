@@ -3,25 +3,23 @@
 #|   Auth                                                                            |
 #|                                                                                   |
 #+-----------------------------------------------------------------------------------+
-#Auth
+#=====================================================================================
+#   DEP CHECK
+#=====================================================================================
 on load:
     if script "EssentialsL.sk" is loaded:
-        if plugin "skript-yaml" is enabled:
-            wait 1 second
+        wait 1 second
+        send "<white>[<red>Auth<white>] <lime>Successfully loaded Auth" to ops and console
         
-        
-        else:
-            set {auth} to false
-            wait 1 second
-            send "<white>[<red>Auth<white>] <red>DISABLED - Unknown Critical Error Occured {CE1}" to ops and console
-            disable script "EL_Auth.sk"
-            send "<white>[<red>Auth<white>] <lime>Successfully loaded Auth" to ops and console
+
     else:
         set {auth} to false
         wait 1 second
         send "<white>[<red>Auth<white>] <red>DISABLED - Unknown Critical Error Occured {CE1}" to ops and console
         disable script "EL_Auth.sk"
-
+#=====================================================================================
+#  MAIN COMMANDS
+#=====================================================================================
 #Register
 command /register <text> <text>:
     trigger:
@@ -30,7 +28,7 @@ command /register <text> <text>:
             stop
 
         if {username::%uuid of player%} is set:
-            send "<red>You are already registered!" to player
+            send "<white>[<red>Auth<white>] <red>You are already registered!" to player
             stop
 
         set {username::%uuid of player%} to arg-1
@@ -52,20 +50,20 @@ command /login <text> <text>:
             stop
 
         if {logged_in::%uuid of player%} is true:
-            send "<yellow>You are already logged in!" to player
+            send "<white>[<red>Auth<white>] <yellow>You are already logged in!" to player
             stop
 
         if arg-1 is not {username::%uuid of player%}:
-            send "<red>Wrong username!" to player
+            send "<white>[<red>Auth<white>] <red>Wrong username!" to player
             stop
 
         if arg-2 is not {password::%uuid of player%}:
-            send "<red>Wrong password!" to player
+            send "<white>[<red>Auth<white>] <red>Wrong password!" to player
             stop
 
         set {logged_in::%uuid of player%} to true
-        send "<green>Successfully logged in!" to player
-        send title "<green>Successfully logged in" to player
+        send "<white>[<red>Auth<white>] <green>Successfully logged in!" to player
+        send title "<white>[<red>Auth<white>] <green>Successfully logged in" to player
         send "<white>[<red>Auth<white>] %player% has logged in" to console
 
 #Logout

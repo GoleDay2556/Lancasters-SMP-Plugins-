@@ -14,8 +14,7 @@
 #  CONFIG
 #=====================================================================================
 on load:
-    set {dep_check_transfer} to true #The dependency check flag. DO NOT TOUCH
-    set {version} to "V 3.0"
+    set {el_version} to "V 3.5"
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
@@ -44,8 +43,8 @@ on load:
     send "[EssentialsL]      _\/\\\_____________\/\\\\\\\\\\_\/\\\\\\\\\\__/\\\\\\\\\\\__\/\\\__\//\\\____\/\\\______\/\\\___/\\\\\\\\\\_____\/\\\____\/\\\\\\\\\\_\/\\\_____________" to console
     send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
     send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
-    send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__" to console
-    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{version}%" to ops and console
+    send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__       Version: %{el_version}%" to console
+    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{el_version}%" to ops and console
 
 
 
@@ -763,7 +762,9 @@ on damage of player:
 on join:
     if {teams} is false:
         send "<white>[<cyan>EssentialsL<white>]<red> This feature is disabled!"
-        stop
+        execute console command "team leave %player%"
+        stop    
+
 
     execute console command "team leave %player%"
 
@@ -780,281 +781,7 @@ on join:
         execute console command "team join PLAYER %player%"
         send "<lime>Welcome back, <cyan><bold>%player%" to player
 
-#=====================================================================================
-#  FUNCTIONS
-#=====================================================================================
-#Page 0
-function control_panel_0(p: player):
-    set {_gui0} to chest inventory with 6 rows named "<white>[<cyan>EssentialsL<white>] Admin Panel (Page 1)"
 
-    loop integers from 0 to 53:
-        set slot loop-integer of {_gui0} to black stained glass pane named " "
-
-
-    set slot 0 of {_gui0} to oak sign named "<bold>/home"
-    set slot 2 of {_gui0} to oak sign named "<bold>/music"
-    set slot 4 of {_gui0} to oak sign named "<bold>/kys"
-    set slot 6 of {_gui0} to oak sign named "<bold>Teams"
-    set slot 8 of {_gui0} to oak sign named "<bold>/afk"
-    set slot 40 of {_gui0} to light gray stained glass pane named " "
-    set slot 44 of {_gui0} to gray carpet named "Main Page"
-
-    if {home} is true:
-        set slot 9 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 18 of {_gui0} to red concrete named "<red>OFF"
-
-    if {music} is true:
-        set slot 11 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 20 of {_gui0} to red concrete named "<red>OFF"
-
-    if {kys} is true:
-        set slot 13 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 22 of {_gui0} to red concrete named "<red>OFF"
-
-    if {teams} is true:
-        set slot 15 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 24 of {_gui0} to red concrete named "<red>OFF"
-
-    if {afk} is true:
-        set slot 17 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 26 of {_gui0} to red concrete named "<red>OFF"
-
-    if {home} and {music} and {kys} and {teams} are true:
-        set slot 39 of {_gui0} to lime concrete named "<green>ON"
-    else:
-        set slot 41 of {_gui0} to red concrete named "<red>OFF"
-    
-
-    open {_gui0} to {_p}
-
-#Page 1
-function control_panel_1(p: player):
-    set {_gui1} to chest inventory with 6 rows named "<white>[<cyan>EssentialsL<white>] Admin Panel (Main Page)"
-    loop integers from 0 to 26:
-        set slot loop-integer of {_gui1} to light gray stained glass pane named " "
-    
-
-    loop integers from 27 to 53:
-        set slot loop-integer of {_gui1} to black stained glass pane named " "
-
-    set slot 10 of {_gui1} to yellow concrete named "<yellow>Reload"
-    set slot 16 of {_gui1} to player head named "<yellow>Online players: %online player count%"
-    set slot 25 of {_gui1} to red concrete named "<red>Kick every player"
-    set slot 36 of {_gui1} to gray carpet named "To feature panel"
-    set slot 37 of {_gui1} to red concrete named "<red>Restart"
-    set slot 39 of {_gui1} to red concrete named "<red>Stop"
-
-    open {_gui1} to {_p}
-#=====================================================================================
-#  OTHER SHIT
-#=====================================================================================
-on inventory click:
-    if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel (Main Page)":
-        if clicked inventory is player's inventory:
-            stop
-        cancel event
-
-        if clicked slot is 10:
-            execute player command "essentialsl/reload"
-
-        if clicked slot is 25:
-            if player is not op:
-                kick all players
-
-        if clicked slot is 36:
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 37:
-            restart the server
-
-        if clicked slot is 39:
-            stop server
-
-on inventory click:
-    if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel (Page 1)":
-        if clicked inventory is player's inventory:
-            stop
-        cancel event
-
-        # Home
-        if clicked slot is 9:
-            set {home} to false
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 18:
-            set {home} to true
-            close player's inventory
-            control_panel_0(player)
-
-        # Music
-        if clicked slot is 11:
-            set {music} to false
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 20:
-            set {music} to true
-            close player's inventory
-            control_panel_0(player)
-
-        # Kys
-        if clicked slot is 13:
-            set {kys} to false
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 22:
-            set {kys} to true
-            close player's inventory
-            control_panel_0(player)
-
-        # Teams
-        if clicked slot is 15:
-            set {teams} to false
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 24:
-            set {teams} to true
-            close player's inventory
-            control_panel_0(player)
-
-        # Afk
-        if clicked slot is 17:
-            set {afk} to false
-            close player's inventory
-            control_panel_0(player)
-
-        if clicked slot is 26:
-            set {afk} to true
-            close player's inventory
-            control_panel_0(player)
-
-        # Global
-        if clicked slot is 41:
-            set {music} to true
-            set {home} to true
-            set {kys} to true
-            set {afk} to true
-            set {teams} to true
-            close player's inventory
-            control_panel_0(player)
-
-        else if clicked slot is 39:
-            set {music} to false
-            set {home} to false
-            set {kys} to false
-            set {afk} to false
-            set {teams} to false
-            close player's inventory
-            control_panel_0(player)
-
-        # Change Page
-        if clicked slot is 44:
-            close player's inventory
-            control_panel_1(player)
-
-
-
-
-#Test
-command panel:
-    trigger:
-        control_panel_1(player)
-
-
-#+-----------------------------------------------------------------------------------+
-#|                                                                                   |
-#|   Economy                                                                         |
-#|                                                                                   |
-#+-----------------------------------------------------------------------------------+
-
-#=====================================================================================
-#  MAIN COMMANDS
-#=====================================================================================
-#Balance
-command /balance:
-    executable by: player
-    trigger:
-        if {balance} is true:
-            send "<white>[<cyan>EssentialsL<white>] <white>Your balance has <green>%{money::%uuid of player%}%L$" to player
-        else if {balance} is false:
-            send "<white>[<cyan>EssentialsL<white>] <red> This feature is disabled!"  
-#Send Money
-command /money-send <player> <integer>:
-    executable by: players
-    trigger:
-        if {money-send} is true:
-            if arg-2 <= 0:
-                send "<white>[<cyan>EssentialsL<white>] <red>Amount must be positive."
-                stop
-
-            if {money::%uuid of player%} < arg-2:
-                send "<white>[<cyan>EssentialsL<white>] <red>You don't have enough money."
-                stop
-
-            remove arg-2 from {money::%uuid of player%}
-            add arg-2 to {money::%uuid of arg-1%}
-
-            send "<white>[<cyan>EssentialsL<white>] <lime>You sent <blue>%arg-2%L$<white> to %arg-1%."
-            send "<white>[<cyan>EssentialsL<white>] <lime>You received %arg-2%L$ from %{player}%." to arg-1
-
-        else if {money-send} is false:
-            send "<white>[<cyan>EssentialsL<white>] <red> This feature is disabled!"  
-
-#Daily
-command /daily:
-    executable by: players
-    trigger:
-        if {daily} is true:
-            set {_uuid} to uuid of player
-
-            if {daily::%{_uuid}%} is set:
-                set {_last} to {daily::%{_uuid}%}
-                set {_passed} to difference between now and {_last}
-
-                if {_passed} < 24 hours:
-                    set {_remaining} to 24 hours - {_passed}
-                    send "<white>[<cyan>EssentialsL<white>] <red>You already claimed your daily money."
-                    send "<white>[<cyan>EssentialsL<white>] <lime>Come back in %{_remaining}%."
-                    stop
-
-            add 50 to {money::%{_uuid}%}
-            set {daily::%{_uuid}%} to now
-
-            send "<green>You received 500L$ as your daily reward!"
-
-        else if {daily} is false:
-            send "<white>[<cyan>EssentialsL<white>] <red> This feature is disabled!"  
-
-
-#=====================================================================================
-#  ADMIN COMMANDS
-#=====================================================================================
-#Give Money
-command /givemoney <player> <integer>:
-    executable by: players
-    permission: op
-    trigger:
-        add arg-2 to {money::%uuid of arg-1%}
-        send "<white>[<cyan>EssentialsL<white>] <lime>You gave <blue>%arg-2%L$<white> to %arg-1%."
-        send "<white>[<cyan>EssentialsL<white>] <lime>You received %arg-2%L$." to arg-1
-
- 
-#clear money
-command /clearmoney <player> <integer>:
-    executable by: players
-    permission: op
-    trigger:
-        remove arg-2 from {money::%uuid of arg-1%}       
-        send "<white>[<cyan>EssentialsL<white>] <red>You lost %arg-2%L$" to arg-1
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |

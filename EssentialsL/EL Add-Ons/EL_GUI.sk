@@ -33,11 +33,14 @@ function control_panel_1(p: player):
     set slot 10 of {_gui1} to yellow concrete named "<yellow>Reload"
     set slot 16 of {_gui1} to player head named "<yellow>Online players: %online player count%"
     set slot 25 of {_gui1} to red concrete named "<red>Kick every player"
-    set slot 36 of {_gui1} to gray carpet named "To feature panel"
+    set slot 36 of {_gui1} to gray carpet named "To EssentialsL feature panel"
     set slot 37 of {_gui1} to red concrete named "<red>Restart"
     set slot 39 of {_gui1} to red concrete named "<red>Stop"
 
     open {_gui1} to {_p}
+
+
+
 
 #=====================================================================================
 # essentialsl GUI page 1
@@ -101,6 +104,9 @@ function control_panel_1(p: player):
     
 
     open {_gui0} to {_p}
+
+
+
 
 #================================================================================
 # AUTH
@@ -167,9 +173,10 @@ function auth_panel(p: player):
 #=====================================================================================
 #  LOGIC
 #=====================================================================================
+
+
 #=====================================================================================
 # essentialsl GUI page 0
-
 on inventory click:
     if name of event-inventory is "<white>[<cyan>EssentialsL<white>] Admin Panel (Main Page)":
         if clicked inventory is player's inventory:
@@ -193,6 +200,11 @@ on inventory click:
 
         if clicked slot is 39:
             stop server
+
+
+
+
+
 ##=====================================================================================
 # essentialsl GUI page 1
 on inventory click:
@@ -280,6 +292,10 @@ on inventory click:
         if clicked slot is 44:
             close player's inventory
             control_panel_1(player)
+
+
+
+
 #=====================================================================================
 # AUTH GUI
 on inventory click:

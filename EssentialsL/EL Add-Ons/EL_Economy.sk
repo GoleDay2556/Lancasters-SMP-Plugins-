@@ -39,7 +39,7 @@ command /money-send <player> <integer>:
 
             if {money::%uuid of player%} < arg-2:
                 send "<white>[<green>Economy<white>] <red>You don't have enough money."
-                stop
+                stop 
 
             remove arg-2 from {money::%uuid of player%}
             add arg-2 to {money::%uuid of arg-1%}

@@ -8,13 +8,24 @@
 #      _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________  
 #       _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_ 
 #        _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__
-#V 4.0.1 - Lightweight Skript-based EssentialsX parody plugin.
+#Lightweight Skript-based EssentialsX parody plugin.
 #=====================================================================================
 #  CONFIG
 #=====================================================================================
 options:
-    el_version: "4.0.1" # EssentialsL Version (Do not change)
-    debug: false # Enable @debug messages (true/false)
+    el_version: "4.0.2" # EssentialsL Version (Do not change)
+
+    # Maint Settings
+
+    debug: false # Enable debug messages (true/false)
+
+    yaml_config: true # Enable YAML config creation (true/false)
+
+    name_on_start: true # Logo displayed on server start (true/false)
+
+    owner_name: "Dimonium_" # Owner name used
+
+
     # Team Names
     team_1_name: "PLAYER"
     team_1_color: "aqua"
@@ -46,20 +57,26 @@ on load:
         execute console command "team modify AFK color green"
         execute console command "team modify AFK prefix AFK_"
 
+    else:
+        execute console command "team delete AFK"
+
     execute console command "team add %{@team_3_name}%"
     execute console command "team modify %{@team_3_name}% color %{@team_3_color}%"
     execute console command "team modify %{@team_3_name}% prefix %{@team_3_prefix}%"
 
-    send "[EssentialsL] __/\\\\\\\\\\\\\\\____________________________________________________________________________________________/\\\\\\__________________/\\\_____________" to console
-    send "[EssentialsL]  _\/\\\///////////____________________________________________________________________________________________\////\\\_________________\/\\\_____________" to console
-    send "[EssentialsL]   _\/\\\________________________________________________________________________/\\\_______/\\\___________________\/\\\_________________\/\\\_____________" to console
-    send "[EssentialsL]    _\/\\\\\\\\\\\______/\\\\\\\\\\__/\\\\\\\\\\_____/\\\\\\\\___/\\/\\\\\\____/\\\\\\\\\\\_\///___/\\\\\\\\\_______\/\\\_____/\\\\\\\\\\_\/\\\_____________" to console
-    send "[EssentialsL]     _\/\\\///////______\/\\\//////__\/\\\//////____/\\\/////\\\_\/\\\////\\\__\////\\\////___/\\\_\////////\\\______\/\\\____\/\\\//////__\/\\\_____________" to console
-    send "[EssentialsL]      _\/\\\_____________\/\\\\\\\\\\_\/\\\\\\\\\\__/\\\\\\\\\\\__\/\\\__\//\\\____\/\\\______\/\\\___/\\\\\\\\\\_____\/\\\____\/\\\\\\\\\\_\/\\\_____________" to console
-    send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
-    send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
-    send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__       Version: %{el_version}%" to console
-    send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{@el_version}%" to ops and console
+    if {@name_on_start} is true:
+        send "[EssentialsL] __/\\\\\\\\\\\\\\\____________________________________________________________________________________________/\\\\\\__________________/\\\_____________" to console
+        send "[EssentialsL]  _\/\\\///////////____________________________________________________________________________________________\////\\\_________________\/\\\_____________" to console
+        send "[EssentialsL]   _\/\\\________________________________________________________________________/\\\_______/\\\___________________\/\\\_________________\/\\\_____________" to console
+        send "[EssentialsL]    _\/\\\\\\\\\\\______/\\\\\\\\\\__/\\\\\\\\\\_____/\\\\\\\\___/\\/\\\\\\____/\\\\\\\\\\\_\///___/\\\\\\\\\_______\/\\\_____/\\\\\\\\\\_\/\\\_____________" to console
+        send "[EssentialsL]     _\/\\\///////______\/\\\//////__\/\\\//////____/\\\/////\\\_\/\\\////\\\__\////\\\////___/\\\_\////////\\\______\/\\\____\/\\\//////__\/\\\_____________" to console
+        send "[EssentialsL]      _\/\\\_____________\/\\\\\\\\\\_\/\\\\\\\\\\__/\\\\\\\\\\\__\/\\\__\//\\\____\/\\\______\/\\\___/\\\\\\\\\\_____\/\\\____\/\\\\\\\\\\_\/\\\_____________" to console
+        send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
+        send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
+        send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__       Version: %{el_version}%" to console
+    
+    else:
+        send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{@el_version}%" to ops and console
 
 
 
@@ -825,17 +842,17 @@ on join:
 
     execute console command "team leave %player%"
 
-    if name of player is "Dimonium_":
-        execute console command "team join ADMIN %player%"
+    if name of player is "%{@owner_name}%":
+        execute console command "team join %{@team_1_name}% %player%"
         send "<lime>Welcome back, <red><bold>Operator" to player
         stop
 
     if player is op:
-        execute console command "team join MODERATOR %player%"
+        execute console command "team join %{@team_2_name}% %player%"
         send "<lime>Welcome back, <red><bold>Moderator" to player
         stop
     else:
-        execute console command "team join PLAYER %player%"
+        execute console command "team join %{@team_3_name}% %player%"
         send "<lime>Welcome back, <cyan><bold>%player%" to player
 
 
@@ -906,10 +923,8 @@ command /anarchy:
         send title "<red>Saving..." with subtitle "<yellow>Player has been transitioned to server 'SMP_2'"
         connect player to server "smp_2"  
 
-
-
-
 #End of the file
 #====================================================================================
-#Authors: Dimonium_ (Dima), Kainoob23 (Niilo)
+#Authors: Dimonium_ (Dima)- Lead Developer
+#LancastersSMP - Server Used & Tested
 #====================================================================================

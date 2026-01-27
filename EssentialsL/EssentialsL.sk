@@ -15,14 +15,11 @@
 options:
     el_version: "4.0.2" # EssentialsL Version (Do not change)
 
-    # Maint Settings
+    # Main Settings
 
     debug: false # Enable debug messages (true/false)
-
     yaml_config: true # Enable YAML config creation (true/false)
-
     name_on_start: true # Logo displayed on server start (true/false)
-
     owner_name: "Dimonium_" # Owner name used
 
 
@@ -464,7 +461,7 @@ command /EssentialsL/reload:
         send "<white>[<cyan>EssentialsL<white>]<yellow> Reloading EssentialsL..."
         execute console command "sk reload EssentialsL.sk"
 
-command EssentialsL/status:
+command /EssentialsL/status:
     trigger:
         send "<white>[<cyan>EssentialsL<white>] <lime>[STATUS]=============="
         
@@ -926,5 +923,5 @@ command /anarchy:
 #End of the file
 #====================================================================================
 #Authors: Dimonium_ (Dima)- Lead Developer
-#LancastersSMP - Server Used & Tested
+#LancastersSMP - Server Used & Tested On
 #====================================================================================

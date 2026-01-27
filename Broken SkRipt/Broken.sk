@@ -1,1 +1,65 @@
+#====================================================================================
+#     B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠
+#====================================================================================
 
+#=====================================================================================
+#  CONFIG
+#=====================================================================================
+options:
+    bsk: true # Enable B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠ (true/false)
+    interval: "10 minutes" # Interval in hours/minutes/seconds/ticks
+
+#=====================================================================================
+#AUTO LOAD, DO NOT TOUCH!
+#=====================================================================================
+on load:
+
+#+-----------------------------------------------------------------------------------+
+#|                                                                                   |
+#|    B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠ /// Main                                                      |
+#|                                                                                   |
+#+-----------------------------------------------------------------------------------+
+
+#=====================================================================================
+# SEQUENCES
+#=====================================================================================
+command /bsk <text>:
+    permission: op
+    trigger:
+        if {@bsk} is true:
+            if arg-1 is "start":
+                set {bsk_?} to false
+                repeat every %{@interval}%:
+                    if {bsk_?} is true:
+                        stop
+                    else: 
+                        if number of online players > 0:
+                            set {bsk_victim} to random online player
+                            broadcast "<yellow>&k A <yellow>joined the game"
+                            wait 10 seconds
+                            broadcast "<red>Couldn't execute the command, contact server admin" 
+                            wait 1 tick
+                            broadcast "<red>Couldn't execute the command, contact server admin" 
+                            wait 3 ticks
+                            broadcast "<red>Couldn't execute the command, contact server admin" 
+                            wait 5 seconds        
+                            broadcast "&k A <white>was made server operator."  
+                            wait 24 second
+                            apply potion of blindness to {bsk_victim} for 15 seconds
+                            damage {bsk_victim} by 1
+                            broadcast "<yellow>null.sk joined the game"
+                            wait 60 seconds
+                                set {_gui_help} to chest inventory named "Ḥ̶͚̟̱̰͋̍̉͘ë̸̛̩̄̎̈́L̸̩͚͚̤̭̾͗̑͗p̸̨̤̫͈͙̪̈́" with size 3
+                                format gui slot 11 of {_gui_help} with paper named "<RED>H E L P" lore "<red>I NEED HELP" to close then run console command "op %player%"
+
+                                open {_gui_help} to all players
+
+     
+        
+
+            
+
+
+
+    
+        

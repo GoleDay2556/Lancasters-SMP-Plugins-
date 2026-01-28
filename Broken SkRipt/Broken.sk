@@ -50,14 +50,6 @@ command /bsk <text>:
                     bsk_none_join()
                 
 
-
-
-                        
-
-
-
-
-
         if arg-1 is "stop":
             if {bsk_running} is not true:
                 send "&cBSK system is not running."
@@ -78,7 +70,7 @@ function bsk_rnd_player(p: player):
 
 function bsk_rnd():
     while {bsk_running} is true:
-        wait 1 seconds
+        wait 10 seconds
         set {rnd} to random number between 1 and 100
 
 

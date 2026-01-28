@@ -6,17 +6,30 @@
 #  CONFIG
 #=====================================================================================
 options:
-    bsk-enabled: true # Enable B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̀́́́́́́́́́́́́́́́́ ̀̀̀̀̀̀̀̀̀̀̀̀̀  ️️️️️️️️️️️️️️  ️  ️  ️  ️  ️  ️  ️
+    bsk-enabled: true # Enable B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠  ️  ️
+    chance_multiplier: 100 #Chance 
 
+    null_min: 13
+    null_max: 23
+    null_min_attack: 5
+    null_max_attack: 7
+
+    none_min: 1
+    none_max: 4
+    none_min_attack: 80
+    none_max_attack: 83
+
+    random_min_time: 50
+    random_max_time: 52
 
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
-on load:
+
 
 #+-----------------------------------------------------------------------------------+
 #|                                                                                   |
-#|    B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠ /// Main                                                      |
+#|    B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠ /// Main                                                        |
 #|                                                                                   |
 #+-----------------------------------------------------------------------------------+
 
@@ -38,15 +51,19 @@ command /bsk <text>:
             set {bsk_running} to true
             send "&aBSK horror system started."
             while {bsk_running} is true:
-                bsk_rnd_player()
+                wait 1 seconds
+                bsk_rnd_player(player)
                 bsk_rnd()
-                if {rnd} is between 1 and 30:
+                if {rnd} is between {@null_min_attack} and {@null_max_attack}:
                     null_fuck({bsk_victim})
-                else if {rnd} is between 31 and 60:
+                else if {rnd} is between {@null_min} and {@null_max}:
                     bsk_null_joined()
-                else if {rnd} is between 61 and 90:
+                else if {rnd} is between {@none_min} and {@none_max}:
                     bsk_none_joined()
-                
+                else if {rnd} is between {@random_min_time} and {@random_max_time}:
+                    bsk_time()
+                else if {rnd} is between {@none_min_attack} and {@none_max_attack}:
+                    bsk_none_fuck()
 
         if arg-1 is "stop":
             if {bsk_running} is not true:
@@ -69,12 +86,14 @@ function bsk_rnd_player(p: player):
 function bsk_rnd():
     while {bsk_running} is true:
         wait 10 seconds
-        set {rnd} to random number between 1 and 100
+        set {rnd} to random number between 1 and {@chance_multiplier}
 
 
 function null_fuck(p: player):
-    execute console command "effect give %{bsk_victim}% blindness 5" 
-    send title "<black>H E L P" to {bsk_victim}
+    execute console command "effect give %{bsk_victim}% blindness 5"
+    send title "<gray>H E L P" to {bsk_victim}
+    play sound "ambient.cave" to {bsk_victim}
+    teleport {bsk_victim} to location of {bsk_victim} offset by 0, 10, 0
     damage {bsk_victim} by 1 heart
 
 function bsk_null_joined():
@@ -86,21 +105,52 @@ function bsk_null_joined():
 function bsk_none_joined():
     if {bsk::none_joined} is true:
         stop
-    broadcast "<yellow>&k none <yellow>joined the game"
+    broadcast "<yellow>&knone <yellow>joined the game"
     set {bsk::none_joined} to true
     wait 10 seconds
     broadcast "<red>you dont have op permission to use this command"
-    wait 5 seconds
+    wait 5 ticks
     broadcast "<red>you dont have op permission to use this command"
     wait 2 ticks
+    broadcast "<red>you dont have op permission to use this command"
+    wait 3 ticks
     broadcast "<red>you dont have op permission to use this command"
     wait 1 ticks
     broadcast "<red>you dont have op permission to use this command"
     wait 2 seconds
-    broadcast "<red>you dont have op permission to use this command"
-    wait 5 seconds
     broadcast "Granted player &knone <white>operator permissions"
 
+function bsk_time():
+    if {bsk::none_joined} is true:
+        set time of world "world" to night
+        set {time} to "night"
+        wait 30 seconds
+        set time of world "world" to day
+        set {time} to "day"
+        
+function bsk_none_fuck():
+    if {bsk::none_joined} is true:
+        loop 2 times:
+            set time of world "world" to night
+            wait 10 ticks
+            set time of world "world" to day
+            wait 10 ticks
+            set time of world "world" to night
+            wait 10 ticks
+            set time of world "world" to day
+            wait 10 ticks
+            set time of world "world" to night
+            wait 10 ticks
+            set time of world "world" to day
+            wait 10 ticks
+            set time of world "world" to night
+            wait 10 ticks
+            set time of world "world" to day
+            wait 10 ticks
+            set time of world "world" to night
+            wait 10 ticks
+            set time of world "world" to day
+            send "<black>Y O U   A R E   F U C K E D" to all players
 
 function bsk_stop():
     set {bsk::null_joined} to false
@@ -113,14 +163,18 @@ function bsk_stop():
 on quit:
     if player is {bsk_victim}:
         delete {bsk_victim}
-
+    
+on chat:
+    if message contains "null":
+        kill player
+        broadcast "01100100 01101111 &kA A A A"
 
 
 
      
         
 
-           
+            
 
 
 

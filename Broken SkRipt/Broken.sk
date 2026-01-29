@@ -7,7 +7,7 @@
 #=====================================================================================
 options:
     bsk-enabled: true # Enable B̵̡͐̏̈̔̽r̶͔̱̬͉̼̺̀͒͗̉̾̓̿͘o̶̖͊͆̎c̷̘̱̄̈͋̒̈k̸̤̠̈̌͊̃̀̈́͘̕ę̶̭͊̀͝ņ̵̫̻̪̰̰̉̈́͆͌̉ ̶̝̦͔͎͎͉́̀̑̏̕Ṡ̶̠̞̥͚̠̕̚͜͜ķ̸̤̺̟̩̆͒͋́̄̉̕r̸̞̋̏̏͐̕̚͝i̶̡̢̛̦̩͍̤͍̓̐̿̔́̉̔p̷̢̛̜̳̭͙̆̈̎͊͆̽̎t̴̡͕̦͓̅͊̈́̒͠  ️  ️
-    chance_multiplier: 100 #Chance 
+    chance_multiplier: 1000 #Chance 
 
     null_min: 13
     null_max: 23
@@ -20,6 +20,8 @@ options:
     random_min_time: 50
     random_max_time: 52
 
+    random_min_tp: 800
+    random_max_tp: 802
 #=====================================================================================
 #AUTO LOAD, DO NOT TOUCH!
 #=====================================================================================
@@ -53,13 +55,15 @@ command /bsk <text>:
                 bsk_rnd_player(player)
                 bsk_rnd()
                 if {rnd} is between {@null_min_attack} and {@null_max_attack}:
-                    null_fuck({bsk_victim})
+                    bsk_null_fuck({bsk_victim})
                 else if {rnd} is between {@null_min} and {@null_max}:
                     bsk_null_joined()
                 else if {rnd} is between {@none_min} and {@none_max}:
                     bsk_none_joined()
                 else if {rnd} is between {@random_min_time} and {@random_max_time}:
                     bsk_time()
+                else if {rnd} is between {@random_min_tp} and {@random_max_tp}:
+                    bsk_rnd_tp(player)
                 else if {rnd} is {@none_attack}:     
                     bsk_none_fuck()
 
@@ -78,9 +82,9 @@ command /bsk <text>:
 function bsk_rnd_player(p: player):
     if {bsk_victim} is set:
         clear {bsk_victim}
-        set {p::*} to all players
-        if size of {p::*} > 0:
-            set {bsk_victim} to random element out of {p::*}
+    set {p::*} to all players
+    if size of {p::*} > 0:
+        set {bsk_victim} to random element out of {p::*}
 
 function bsk_rnd():
     while {bsk_running} is true:
@@ -88,7 +92,7 @@ function bsk_rnd():
         set {rnd} to random number between 1 and {@chance_multiplier}
 
 
-function null_fuck(p: player):
+function bsk_null_fuck(p: player):
     execute console command "effect give %{bsk_victim}% blindness 5"
     send title "<gray>H E L P" to {bsk_victim}
     play sound "ambient.cave" to {bsk_victim}
@@ -134,6 +138,26 @@ function bsk_none_fuck():
             wait 20 ticks
             set time of world "world" to day
 
+function bsk_rnd_tp(p: player):
+    if {bsk::none_joined} is true:
+        wait 10 seconds
+        set {_x} to random number between -10 and 10
+        set {_y} to random number between -10 and 10
+        set {_z} to random number between -10 and 10
+        execute console command "tp %{_p}% ~%{_x}% ~%{_y}% ~%{_z}%"
+
+function bsk_str_plc(p: player):
+    if {bsk::none_joined} is true:
+        wait 10 seconds
+        set {_loc} to location of player offset by vector(random number between -10 and 10, 0, random number between -10 and 10)
+        place structure "bsk_hb_structure.nbt" at {_loc}
+            
+            
+            
+
+
+        place structure "bsk_hb_structure" at {_loc}
+
 function bsk_stop():
     set {bsk::null_joined} to false
     set {bsk::none_joined} to false
@@ -154,10 +178,13 @@ on chat:
             broadcast "01000111 01000001 01011001 &kA A A A"
         
 on bed enter:
-    while {bsk_running} is true:
-        if time is night:
-            cancel event
-            damage player by 5 hearts
+    if {bsk::none_joined} is true:
+        play sound "ambient.cave" to player
+        damage player by 5 hearts
+        send "You don't have permission to use *bed*"
+        cancel event
+
+
 
 
 

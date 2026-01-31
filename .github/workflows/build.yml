@@ -33,7 +33,7 @@ jobs:
 
       # 5️⃣ Build Panel / Web Server Status EXE
       - name: Build Panel Server Status EXE
-        run: pyinstaller --onefile --name PanelServerStatus --add-data "MCServerStatus/Panel_Server_Status/config.json;." MCServerStatus/Panel_Server_Status/WebStatus.py --distpath "build/WebServerStatus"
+        run: pyinstaller --onefile --name PanelServerStatus --add-data "MCServerStatus/Web_Panel_Server_Status/config.json;." MCServerStatus/Panel_Server_Status/WebStatus.py --distpath "build/WebServerStatus"
 
       # 6️⃣ Zip Minecraft Server Status
       - name: Zip MCServerStatus

@@ -3,8 +3,10 @@ name: Build & Release Windows EXEs with ZIPs
 on:
   push:
     branches:
-      - main       # Trigger on push to main branch
-  workflow_dispatch: # Also allow manual run from GitHub
+      - main
+    paths:
+      - 'MCServerStatus/**'   # Only trigger if files inside MCServerStatus folder change
+  workflow_dispatch:          # Still allow manual run
 
 jobs:
   build:

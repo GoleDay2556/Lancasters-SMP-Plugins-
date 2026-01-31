@@ -48,7 +48,7 @@ jobs:
           copy build\MCServerStatus\MCServerStatus.exe repo_zip\MCStatus.exe
           copy MCServerStatus\MC_Server_Status\config.json repo_zip\config.json
           powershell Compress-Archive -Path repo_zip\* -DestinationPath MCServerStatus.zip
-          rmdir /s /q repo_zip
+          Remove-Item -Recurse -Force repo_zip
 
       # 7️⃣ Zip Panel / Web Server Status
       - name: Zip WebServerStatus
@@ -57,7 +57,7 @@ jobs:
           copy build\WebServerStatus\PanelServerStatus.exe repo_zip\WebStatus.exe
           copy MCServerStatus\Web_Server_Status\config.json repo_zip\config.json
           powershell Compress-Archive -Path repo_zip\* -DestinationPath WebServerStatus.zip
-          rmdir /s /q repo_zip
+          Remove-Item -Recurse -Force repo_zip
 
       # 8️⃣ Create StatusZIPs folder and move ZIPs there
       - name: Move ZIPs to StatusZIPs folder

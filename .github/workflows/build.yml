@@ -76,3 +76,4 @@ jobs:
           git add MCServerStatus/Web_Server_Status/build/
           git diff --cached --quiet || git commit -m "Add latest ZIP files"
           git push
+

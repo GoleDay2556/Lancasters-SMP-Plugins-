@@ -1,5 +1,4 @@
-
-name: Build Windows EXE
+name: Build Windows EXEs
 
 on:
   push:
@@ -24,16 +23,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build EXE
+      - name: Build Minecraft Server Status EXE
         run: |
-          pyinstaller --onefile --add-data "MCServerStatus/MC_Server_Status/config.json;." MCServerStatus/MC_Server_Status/MCStatusPage.py
- 
-      - name: Build EXE
-        run: |
-          pyinstaller --onefile --add-data "MCServerStatus/Panel_Server_Status/config.json;." MCServerStatus/Panel_Server_Status/PanelStatusPage.py
+          pyinstaller --onefile --name MCServerStatus ^
+            --add-data "MCServerStatus/MC_Server_Status/config.json;." ^
+            MCServerStatus/MC_Server_Status/MCStatusPage.py
 
-      - name: Upload artifact
+      - name: Build Panel Server Status EXE
+        run: |
+          pyinstaller --onefile --name PanelServerStatus ^
+            --add-data "MCServerStatus/Panel_Server_Status/config.json;." ^
+            MCServerStatus/Panel_Server_Status/PanelStatusPage.py
+
+      - name: Upload EXEs
         uses: actions/upload-artifact@v4
         with:
           name: StatusPage-Windows
-          path: dist/StatusPage.exe
+          path: |
+            dist/MCServerStatus.exe
+            dist/PanelServerStatus.exe

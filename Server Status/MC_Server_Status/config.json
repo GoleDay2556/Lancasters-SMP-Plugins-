@@ -1,0 +1,8 @@
+{
+  "statuspage_api_key": "YOUR_API_KEY",
+  "page_id": "YOUR_PAGE_ID",
+  "component_id": "YOUR_COMPONENT_ID",
+  "mc_host": "play.yourserver.net",
+  "mc_port": 25565,
+  "check_interval": 60
+}

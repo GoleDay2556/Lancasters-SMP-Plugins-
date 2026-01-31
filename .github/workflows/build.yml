@@ -3,21 +3,21 @@ name: Build & Release Windows EXEs with ZIPs
 on:
   push:
     branches:
-      - main
+      - main       # Trigger on push to main branch
     paths:
-      - 'MCServerStatus/**'   # Only trigger if files inside MCServerStatus folder change
-  workflow_dispatch:          # Still allow manual run
+      - 'MCServerStatus/**'  # Only trigger if something in MCServerStatus changes
+  workflow_dispatch:         # Manual trigger allowed
 
 jobs:
-  build:
+  build-and-commit:
     runs-on: windows-latest
 
     steps:
-      # 1️⃣ Checkout the repo with write access
+      # 1️⃣ Checkout repository with PAT for push access
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          persist-credentials: true
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
 
       # 2️⃣ Set up Python
@@ -37,39 +37,41 @@ jobs:
         run: pyinstaller --onefile --name MCServerStatus --add-data "MCServerStatus/MC_Server_Status/config.json;." MCServerStatus/MC_Server_Status/MCStatus.py --distpath "build/MCServerStatus"
 
       # 5️⃣ Build Panel / Web Server Status EXE
-      - name: Web Server Status EXE
+      - name: Build Panel / Web Server Status EXE
         run: pyinstaller --onefile --name PanelServerStatus --add-data "MCServerStatus/Web_Server_Status/config.json;." MCServerStatus/Web_Server_Status/WebStatus.py --distpath "build/WebServerStatus"
 
       # 6️⃣ Zip Minecraft Server Status
       - name: Zip MCServerStatus
         run: |
-          copy build\MCServerStatus\MCServerStatus.exe MCStatus.exe
-          copy MCServerStatus\MC_Server_Status\config.json config.json
-          powershell Compress-Archive -Path MCStatus.exe, config.json -DestinationPath MCServerStatus.zip
-          del MCStatus.exe
-          del config.json
+          mkdir repo_zip
+          copy build\MCServerStatus\MCServerStatus.exe repo_zip\MCStatus.exe
+          copy MCServerStatus\MC_Server_Status\config.json repo_zip\config.json
+          powershell Compress-Archive -Path repo_zip\* -DestinationPath MCServerStatus.zip
+          rmdir /s /q repo_zip
 
       # 7️⃣ Zip Panel / Web Server Status
       - name: Zip WebServerStatus
         run: |
-          copy build\WebServerStatus\PanelServerStatus.exe WebStatus.exe
-          copy MCServerStatus\Web_Server_Status\config.json config.json
-          powershell Compress-Archive -Path WebStatus.exe, config.json -DestinationPath WebServerStatus.zip
-          del WebStatus.exe
-          del config.json
+          mkdir repo_zip
+          copy build\WebServerStatus\PanelServerStatus.exe repo_zip\WebStatus.exe
+          copy MCServerStatus\Web_Server_Status\config.json repo_zip\config.json
+          powershell Compress-Archive -Path repo_zip\* -DestinationPath WebServerStatus.zip
+          rmdir /s /q repo_zip
 
-      # 8️⃣ Create folder in repo and move ZIPs there
+      # 8️⃣ Create StatusZIPs folder and move ZIPs there
       - name: Move ZIPs to StatusZIPs folder
         run: |
-          mkdir StatusZIPs
-          move MCServerStatus.zip StatusZIPs\
-          move WebServerStatus.zip StatusZIPs\
+          mkdir MCServerStatus/MC_Server_Status/build
+          mkdir MCServerStatus/Web_Server_Status/build
+          move MCServerStatus.zip MCServerStatus/MC_Server_Status/build\
+          move WebServerStatus.zip MCServerStatus/Web_Server_Status/build\
 
-      # 9️⃣ Commit and push the ZIPs to main branch
+      # 9️⃣ Commit and push ZIPs back to repo
       - name: Commit ZIPs to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add StatusZIPs/
-          git commit -m "Add latest ZIP files"
+          git add MCServerStatus/MC_Server_Status/build/
+          git add MCServerStatus/Web_Server_Status/build/
+          git diff --cached --quiet || git commit -m "Add latest ZIP files"
           git push

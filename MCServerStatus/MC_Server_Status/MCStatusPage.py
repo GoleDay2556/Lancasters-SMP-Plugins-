@@ -43,7 +43,7 @@ def update_status(status):
     r = requests.patch(url, headers=headers, data=data)
     print(f"Status → {status} ({r.status_code})")
 
-print("✅ Minecraft Status Checker started")
+print("✅ Minecraft Server Status Checker started")
 
 while True:
     update_status("operational" if is_server_online() else "major_outage")

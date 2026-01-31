@@ -5,6 +5,7 @@ import json
 import sys
 import os
 
+VERSION = "V1.0MC"
 CONFIG_FILE = "config.json"
 
 def load_config():
@@ -21,8 +22,8 @@ STATUSPAGE_API_KEY = config["statuspage_api_key"]
 PAGE_ID = config["page_id"]
 COMPONENT_ID = config["component_id"]
 
-MC_HOST = config["panel_host"]
-MC_PORT = config.get("panel_port", 25565)
+MC_HOST = config["mc_host"]
+MC_PORT = config.get("mc_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
 
 def is_server_online():
@@ -43,8 +44,9 @@ def update_status(status):
     r = requests.patch(url, headers=headers, data=data)
     print(f"Status → {status} ({r.status_code})")
 
-print("✅ Panel Status Checker started")
+print("✅ Minecraft Server Status Checker started" + VERSION)
 
 while True:
-    update_status("operational" if is_server_online() else "partial_outage")
+    update_status("operational" if is_server_online() else "major_outage")
+    print(f"Found Minecraft Server Instance on {MC_PORT}")
     time.sleep(CHECK_INTERVAL)

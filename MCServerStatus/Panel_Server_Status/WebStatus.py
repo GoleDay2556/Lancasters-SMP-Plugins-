@@ -5,7 +5,8 @@ import json
 import sys
 import os
 
-CONFIG_FILE = "config.json" #TEST
+VERSION = "V1.0Web"
+CONFIG_FILE = "config.json"
 
 def load_config():
     if not os.path.exists(CONFIG_FILE):
@@ -21,13 +22,13 @@ STATUSPAGE_API_KEY = config["statuspage_api_key"]
 PAGE_ID = config["page_id"]
 COMPONENT_ID = config["component_id"]
 
-MC_HOST = config["mc_host"]
-MC_PORT = config.get("mc_port", 25565)
+WEB_HOST = config["panel_host"]
+WEB_PORT = config.get("panel_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
 
 def is_server_online():
     try:
-        sock = socket.create_connection((MC_HOST, MC_PORT), timeout=5)
+        sock = socket.create_connection((WEB_HOST, WEB_PORT), timeout=5)
         sock.close()
         return True
     except:
@@ -43,9 +44,8 @@ def update_status(status):
     r = requests.patch(url, headers=headers, data=data)
     print(f"Status → {status} ({r.status_code})")
 
-print("✅ Minecraft Server Status Checker started")
+print("✅ Web Status Checker started" + VERSION)
 
 while True:
-    update_status("operational" if is_server_online() else "major_outage")
-    print(f"Found Minecraft Server Instance on {MC_PORT}")
+    update_status("operational" if is_server_online() else "partial_outage")
     time.sleep(CHECK_INTERVAL)

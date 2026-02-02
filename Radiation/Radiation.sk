@@ -1,0 +1,209 @@
+#+-----------------------------------------------------------------------------------+
+#|                                                                                   |
+#|   Radiation                                                                       |
+#|                                                                                   |
+#+-----------------------------------------------------------------------------------+
+
+
+#=====================================================================================
+#  CONFIG
+#=====================================================================================
+
+options:
+    geiger-radius: 30       # radius for Geiger counter scanning
+    damage-radius: 10       # radius for radiation damage
+    max-tick-delay: 2       # Geiger counter max tick delay
+    min-tick-delay: 0.1       # Geiger counter min tick delay
+    max-rad-gain: 6         # max radiation per second
+
+every 1 ticks:
+#=====================================================================================
+# RAD COUNTER LOGIC
+#=====================================================================================
+    loop all players:
+        if loop-player's held item is iron door named "Rad Counter":
+            
+            # Find closest emerald block
+            set {_closest} to {@geiger-radius} + 1
+            loop blocks in radius {@geiger-radius} around loop-player:
+                if loop-block is emerald block or black concrete:
+                    set {_d} to distance between loop-player and location of loop-block
+                    if {_d} < {_closest}:
+                        set {_closest} to {_d}
+
+
+            # Radiation level calculation
+            if {_closest} <= {@geiger-radius}:
+                set {_level} to round(({@geiger-radius}+1-{_closest}) / {@geiger-radius} * {@max-rad-gain}, 3)
+            else:
+                set {_level} to 0.0
+
+            # Add to cumulative radiation
+            add {_level} to {radiation::%uuid of loop-player%}
+
+
+            # Action bar display
+            if {_level} >= 5:
+                send action bar "&c☢ Radiation: %{_level}% Rad/s" to loop-player
+            else if {_level} >= 3:
+                send action bar "&6☢ Radiation: %{_level}% Rad/s" to loop-player
+            else if {_level} >= 1:
+                send action bar "&a☢ Radiation: %{_level}% Rad/s" to loop-player
+            else if {radiation::%uuid of loop-player%} >= 2500:
+                send action bar "<red>☢ Warning Dangerously High Dose Detected: %{radiation::%uuid of loop-player%}% Rad" to loop-player      
+            else:
+                send action bar "&a☢ Radiation: 0 Rad" to loop-player
+
+            # Geiger sound
+            set {_ratio} to {_closest} / {@geiger-radius}
+            set {_delay} to round({_ratio} * ({@max-tick-delay}-{@min-tick-delay}) + {@min-tick-delay})
+            if {tickcounter::%uuid of loop-player%} is not set:
+                set {tickcounter::%uuid of loop-player%} to {_delay}
+            subtract 1 from {tickcounter::%uuid of loop-player%}
+            if {tickcounter::%uuid of loop-player%} <= 0:
+                set {tickcounter::%uuid of loop-player%} to {_delay}
+                set {_pitch} to random number between 5 and 10
+                play sound "block.note_block.hat" with pitch {_pitch} to loop-player
+                if {_closest} <= 3:
+                    chance of 50%:
+                        play sound "block.lever.click" with pitch {_pitch} to loop-player
+                if {_closest} <= 2:
+                    chance of 40%: 
+                        play sound "block.tripwire.click_on" with pitch {_pitch} to loop-player
+#=====================================================================================
+# RADIATION EFFECTS
+#=====================================================================================
+    loop all players:
+        # Skip non-players if you want H.E.V Suit logic only for players
+        set {_closest} to {@damage-radius} + 1
+        loop blocks in radius {@damage-radius} around loop-player:
+            if loop-block is emerald block:
+
+                set {_d} to distance between loop-player and location of loop-block
+                if {_d} < {_closest}:
+                    set {_closest} to {_d}
+
+        # Get cumulative radiation for players
+        if loop-player is player:
+            set {_rad} to {radiation::%uuid of loop-player%}
+        else:
+            set {_rad} to 0
+
+        # Apply distance-based effects
+        if {_closest} <= {@damage-radius}:
+            if {_closest} <= 2:
+                apply wither 4 to loop-player for 2 seconds
+                apply poison 4 to loop-player for 2 seconds
+                execute console command "effect give %loop-player% minecraft:nausea 2 1 true"
+            else if {_closest} <= 5:
+                apply wither 1 to loop-player for 2 seconds
+                apply poison 1 to loop-player for 2 seconds
+            else if {_closest} <= 10:
+                apply poison 1 to loop-player for 2 seconds
+            else:
+                apply poison 1 to loop-player for 1 second
+
+        # Extra damage only for players based on total radiation
+        if loop-player is player:
+            if {_rad} >= 1500:
+                damage loop-player by 1
+            if {_rad} >= 2000:
+                damage loop-player by 2
+            if {_rad} >= 5000:
+                kill loop-player
+                broadcast "%loop-player% got irradiated"
+
+#=====================================================================================
+# RADIATION DAMAGE SYSTEM
+#=====================================================================================
+every 10 ticks:
+    loop all players:
+        if loop-player is player:  # ensures only mobs/players
+
+            # Find closest emerald block for this entity
+            set {_closest} to {@damage-radius} + 1
+            loop blocks in radius {@damage-radius} around loop-player:
+                if loop-block is emerald block:
+
+                    # ---- NORMAL DISTANCE CHECK ----
+                    set {_d} to distance between loop-player and location of loop-block
+                    if {_d} < {_closest}:
+                        set {_closest} to {_d}
+
+
+
+            # Get cumulative radiation only for players
+            if loop-player is player:
+                set {_rad} to {radiation::%uuid of loop-player%}
+            else:
+                set {_rad} to 0
+
+            # Apply distance-based effects (all living entities)
+            if {_closest} <= {@damage-radius}:
+                if {_closest} <= 2:
+                    apply wither 4 to loop-player for 2 seconds
+                    apply poison 4 to loop-player for 2 seconds
+                    execute console command "effect give %loop-player% minecraft:nausea 2 1 true"
+                else if {_closest} <= 5:
+                    apply wither 1 to loop-player for 2 seconds
+                    apply poison 1 to loop-player for 2 seconds
+                else if {_closest} <= 10:
+                    apply poison 1 to loop-player for 2 seconds
+                else:
+                    apply poison 1 to loop-player for 1 second
+
+            # Extra damage for players based on cumulative rad
+            if loop-player is player:
+                if {_rad} >= 3000:
+                    damage loop-player by 1 
+                if {_rad} >= 4000:
+                    damage loop-player by 2 
+                if {_rad} >= 7000:
+                    kill loop-player
+                    if loop-player is player:
+                        broadcast "%loop-player% got irradiated"
+
+            if {radiation::%uuid of loop-player%} >= 2000:
+                if loop-player's held item is iron door named "Rad Counter":
+                    play sound "block.note_block.pling" to loop-player
+                    send title "" with subtitle "<red>☢ DANGEOURS RAD LEVEL ☢" to loop-player
+
+#=====================================================================================
+#  TRIGGERS
+#=====================================================================================
+on death of player:
+    delete {radiation::%uuid of victim%}
+    delete {tickcounter::%uuid of victim%}
+
+on place of iron door:
+    if name of event-item is "Rad Counter":
+        cancel event
+    else:
+        stop
+    # Find closest emerald block around player
+    set {_closest} to 20 + 1   # Use same radius as your geiger-radius
+    loop blocks in radius 20 around player:
+        if loop-block is emerald block:
+            set {_d} to distance between player and location of loop-block
+            if {_d} < {_closest}:
+                set {_closest} to {_d}
+
+    # Calculate current radiation level (decimal)
+    if {_closest} <= 20:
+        set {_level} to round((20 + 1 - {_closest}) / 20 * 6, 3)
+    else:
+        set {_level} to 0.0
+
+    # Send messages
+    send "§eCurrent radiation level: %{_level}% Rad/s" to player
+    send "§6Absorbed radiation level: %{radiation::%uuid of player%}% Rad" to player
+
+# Golden applwe
+on eat of golden apple:
+    # Reduce player's absorbed radiation by 1000
+    subtract 10000 from {radiation::%uuid of player%}
+    
+    # Make sure radiation does not go below 0
+    if {radiation::%uuid of player%} < 0:
+        set {radiation::%uuid of player%} to 0
+

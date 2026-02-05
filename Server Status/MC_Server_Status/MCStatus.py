@@ -27,7 +27,7 @@ MC_HOST = config["mc_host"]
 MC_PORT = config.get("mc_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
 
-STATUS_PROFILE = config.get("status_profile", "default")
+STATUS_PROFILE = config.get("status_profile")
 
 def is_server_online():
     try:

@@ -26,6 +26,8 @@ WEB_HOST = config["web_host"]
 WEB_PORT = config.get("web_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
 
+STATUS_PROFILE = config.get("status_profile")
+
 def is_server_online():
     try:
         sock = socket.create_connection((WEB_HOST, WEB_PORT), timeout=5)

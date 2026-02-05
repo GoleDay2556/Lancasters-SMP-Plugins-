@@ -5,4 +5,5 @@
   "web_host": "YOUR_WEBSITE_IP",
   "web_port": 25565,
   "check_interval": 60
+  "status_profile": "major_outage" 
 }

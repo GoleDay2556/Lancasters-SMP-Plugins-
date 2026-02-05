@@ -5,8 +5,9 @@ import json
 import sys
 import os
 
-VERSION = "V1.1MC" #Version (DO NOT CHANGE)
-CONFIG_FILE = "config.json" #Configuration File (DO NOT CHANGE)
+VERSION = "V1.3MC" #Version (DO NOT CHANGE)
+CONFIG_FILE = "config.json" #Configuration File (DO NOT CHANGE)´
+STATUS_PROFILE = 
 
 
 def load_config():
@@ -26,6 +27,8 @@ COMPONENT_ID = config["component_id"]
 MC_HOST = config["mc_host"]
 MC_PORT = config.get("mc_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
+
+STATUS_PROFILE = config.get("status_profile", "default")
 
 def is_server_online():
     try:
@@ -48,6 +51,5 @@ def update_status(status):
 print("✅ Minecraft Server Status Checker started " + VERSION)
 
 while True:
-    update_status("operational" if is_server_online() else "major_outage")
-    print(f"Found Minecraft Server Instance on {MC_PORT}")
+    update_status("operational" if is_server_online() else STATUS_PROFILE)
     time.sleep(CHECK_INTERVAL)

@@ -5,7 +5,7 @@ import json
 import sys
 import os
 
-VERSION = "V1.2Web" #Version (DO NOT CHANGE)
+VERSION = "V1.3Web" #Version (DO NOT CHANGE)
 CONFIG_FILE = "config.json" #Configuration File (DO NOT CHANGE)
 
 def load_config():
@@ -47,5 +47,5 @@ def update_status(status):
 print("✅ Web Status Checker started " + VERSION)
 
 while True:
-    update_status("operational" if is_server_online() else "partial_outage")
+    update_status("operational" if is_server_online() else STATUS_PROFILE)
     time.sleep(CHECK_INTERVAL)

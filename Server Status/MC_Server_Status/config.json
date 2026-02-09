@@ -2,9 +2,8 @@
   "statuspage_api_key": "YOUR_API_KEY",
   "page_id": "YOUR_PAGE_ID",
   "component_id": "YOUR_COMPONENT_ID",
-  "mc_host": "play.yourserver.net", // your Minecraft server IP or domain
-  "mc_port": 25565, // default is 25565
-  "check_interval": 60, // default is 60 seconds
-  "status_profile": "major_outage"  // operational, degraded_performance, partial_outage, major_outage, maintenance
+  "mc_host": "play.yourserver.net",
+  "mc_port": 25565,
+  "check_interval": 60,
+  "status_profile": "major_outage"
 }
-

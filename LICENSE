@@ -1,53 +1,194 @@
-Copyright © 2026 Dima Golovanov (@Dimonium_)
+# User Agreement (Terms of Use)
+
+Last Updated: 2026
+
+This User Agreement ("Agreement") governs the use of all digital content, software, artwork, plugins, data, and related materials created and owned by **Dima Golovanov** ("Author").
+
+By downloading, installing, viewing, accessing, or using any of the Author’s works, you agree to the terms outlined below.
+
+---
+
+# 1. Scope of Protected Works
+
+This Agreement applies to ALL works created and distributed by the Author, including but not limited to:
+
+- Web Status Checker software (.exe and source code)
+- All Skript plugins and scripts
+- Minecraft-related plugins and tools
+- Artwork and graphic designs
+- Logos and branding materials
+- Images, pictures, textures, and visual assets
+- Documentation and written materials
+- Data files and configuration examples
+- Website content and repository materials
+- Any future updates or related digital products
+
+All such materials are collectively referred to as the "Works".
+
+---
+
+# 2. Ownership & Intellectual Property
+
+All Works are the exclusive intellectual property of:
+
+© 2026 Dima Golovanov — Lancasters SMP.  
 All Rights Reserved.
 
-This license applies to:
-- All related software, including but not limited to plugins, Skript (.sk) files, tools, and code
-- All related artworks, graphics, logos, textures, and visual assets
+No ownership rights are transferred under this Agreement.
 
-1. OWNERSHIP
-All software, server configurations, scripts, artworks, and related content
-are the exclusive property of Dima Golovanov, unless otherwise stated.
+You acknowledge that the Author retains full copyright and intellectual property rights to all Works.
 
-2. PERMITTED USE
-You are granted a limited, non-exclusive, non-transferable license to:
-- Use the software and content for personal use
-- Use the software on private or public Minecraft servers
-- Host and operate NON-PAY-TO-WIN servers using the software
+---
 
-3. PAY-TO-WIN AND COMMERCIAL USE (PROHIBITED)
+# 3. License Grant
+
+You are granted a limited, non-exclusive, non-transferable, revocable license to:
+
+- Use the software for personal or server-related purposes  
+- Use Skript plugins on your own server  
+- View and use artworks for personal, non-commercial purposes  
+- Modify the Works strictly for private/self use only  
+
+Modification is permitted ONLY under the following conditions:
+
+- The modified version remains for your private use  
+- The modified version is not shared, distributed, published, or sold  
+- Original copyright notices remain intact  
+
 You may NOT:
-- Use the software or content on Pay-to-Win (P2W) servers
-- Sell or provide paid ranks, items, kits, currency, commands, permissions,
-  or any gameplay advantages
-- Accept donations or payments that provide gameplay benefits
-- Lock gameplay features behind payments or subscriptions
-- Monetize access to the software or any derivative works
 
-4. REDISTRIBUTION
-You may NOT:
-- Redistribute, reupload, mirror, or publicly share the software or content
-- Claim the software, artworks, or server name as your own
-- Sell, sublicense, rent, or transfer the software or content
+- Redistribute original or modified versions  
+- Resell or sublicense any Works  
+- Publish modified versions publicly  
+- Claim authorship of any Works  
+- Remove or alter copyright notices  
+- Upload the Works to third-party marketplaces or file-sharing services  
 
-Private modifications for personal or non-P2W server use are permitted,
-provided such modifications are not redistributed.
+Any unauthorized use automatically terminates this license.
 
-5. DERIVATIVE WORKS
-Derivative works may be created ONLY for personal or non-P2W server use.
-Redistribution or publication of derivative works is prohibited.
+---
 
-6. TERMINATION
-Any violation of this license, especially involving monetization or
-Pay-to-Win mechanics, automatically terminates your right to use the
-software and content.
+# 4. Strict Prohibition of Pay-to-Win Usage
 
-7. DISCLAIMER
-The software and content are provided “AS IS”, without warranty of any kind.
-The author is not responsible for any damages or losses resulting from use.
+The Works may NOT be used on any server, platform, or service that:
 
-8. TRADEMARK NOTICE
-“Lancasters SMP” is an unregistered trademark of Dima Golovanov (@Dimonium_).
-Unauthorized use of the name, branding, or associated identity is prohibited.
+- Sells gameplay advantages for real money  
+- Provides purchasable in-game power, ranks, boosts, or competitive advantages  
+- Operates as a "Pay-to-Win" (P2W) system  
+- Monetizes unfair gameplay mechanics  
 
-For permissions beyond this license, contact the copyright holder directly.
+This prohibition applies whether monetization is direct or indirect.
+
+If the Works are used on a server that later becomes Pay-to-Win, the license is immediately revoked.
+
+The Author reserves the right to issue takedown requests or enforce copyright claims against violating servers.
+
+---
+
+# 5. Commercial Use Restriction
+
+Commercial use of any Works, including but not limited to:
+
+- Selling modified versions  
+- Using artwork in paid products  
+- Redistributing plugins for profit  
+- Using branding for monetized servers  
+
+is strictly prohibited without explicit written permission from the Author.
+
+---
+
+# 6. Disclaimer of Warranty
+
+All Works are provided "AS IS" without warranty of any kind.
+
+The Author makes no guarantees regarding:
+
+- Functionality  
+- Compatibility  
+- Fitness for a particular purpose  
+- Continuous availability  
+- Accuracy of data or monitoring results  
+
+Use of the Works is at your own risk.
+
+---
+
+# 7. Limitation of Liability
+
+Under no circumstances shall the Author be liable for:
+
+- Direct or indirect damages  
+- Loss of data  
+- Loss of revenue  
+- Server downtime  
+- API failures  
+- Misuse of plugins or scripts  
+- Security breaches caused by user negligence  
+
+This limitation applies to the maximum extent permitted by law.
+
+---
+
+# 8. Data & Security Responsibility
+
+Users are fully responsible for:
+
+- Securing API keys  
+- Protecting configuration files  
+- Managing server security  
+- Backing up their own data  
+
+The Author is not responsible for data loss or unauthorized access.
+
+---
+
+# 9. Third-Party Services
+
+Some Works may interact with third-party services (e.g., Statuspage.io, hosting providers, APIs).
+
+The Author is not responsible for:
+
+- Third-party outages  
+- API changes  
+- Account bans or suspensions  
+- Rate limits  
+
+---
+
+# 10. Copyright Enforcement
+
+Unauthorized copying, distribution, public modification, commercial exploitation, or Pay-to-Win usage of any Works may result in:
+
+- Immediate license termination  
+- Copyright claims  
+- DMCA takedown notices (or equivalent procedures)  
+- Legal action where applicable  
+
+---
+
+# 11. Termination
+
+This license automatically terminates if you violate any terms of this Agreement.
+
+Upon termination, you must cease all use of the Works and delete all copies.
+
+---
+
+# 12. Governing Law
+
+This Agreement shall be governed in accordance with applicable laws in the Author’s jurisdiction.
+
+Any disputes shall be resolved under applicable legal procedures.
+
+---
+
+# Full Copyright Notice
+
+© 2026 Dima Golovanov — Lancasters SMP.  
+All Rights Reserved.
+
+All software, artwork, scripts, plugins, images, graphics, data, documentation, and related materials are protected by copyright law and international intellectual property regulations.
+
+Modification is permitted strictly for private use only.  
+Redistribution, commercial exploitation, or Pay-to-Win server usage is strictly prohibited without explicit written permission from the Author.

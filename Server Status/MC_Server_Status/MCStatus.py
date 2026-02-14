@@ -5,7 +5,7 @@ import json
 import os
 from datetime import datetime
 
-VERSION = "V1.5MC"
+VERSION = "V1.6MC"
 CONFIG_FILE = "config.json"
 
 # ---- COLORS ----
@@ -46,7 +46,8 @@ required_keys = [
     "statuspage_api_key",
     "page_id",
     "component_id",
-    "web_host",
+    "mc_host",
+    "mc_port",
     "status_profile"
 ]
 
@@ -60,8 +61,8 @@ STATUSPAGE_API_KEY = config["statuspage_api_key"]
 PAGE_ID = config["page_id"]
 COMPONENT_ID = config["component_id"]
 
-WEB_HOST = config["web_host"]
-WEB_PORT = config.get("web_port", 80)
+MC_HOST = config["mc_host"]
+MC_PORT = config.get("mc_port", 25565)
 CHECK_INTERVAL = config.get("check_interval", 60)
 STATUS_PROFILE = config["status_profile"]  # starting severity
 
@@ -107,7 +108,7 @@ if not test_auth():
 # ---------------- Server Check ----------------
 def is_server_online():
     try:
-        sock = socket.create_connection((WEB_HOST, WEB_PORT), timeout=5)
+        sock = socket.create_connection((MC_HOST, MC_PORT), timeout=5)
         sock.close()
         return True
     except:

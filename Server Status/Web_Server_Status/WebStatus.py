@@ -5,7 +5,7 @@ import json
 import os
 from datetime import datetime
 
-VERSION = "V1.5Web"
+VERSION = "V1.6Web"
 CONFIG_FILE = "config.json"
 
 # ---- COLORS ----
@@ -161,12 +161,10 @@ while True:
         offline_duration = now - offline_since
         new_status = get_escalated_status(offline_duration, STATUS_PROFILE)
 
-    # Update Statuspage only if status changed
     if new_status != last_status:
         update_status(new_status)
         last_status = new_status
 
-    # Console log
     if online:
         print(now_time() + GREEN + f"Server online → operational" + RESET)
     else:

@@ -13,7 +13,7 @@
 #  CONFIG
 #=====================================================================================
 options:
-    el_version: "4.1.1" # EssentialsL Version (Do not change)
+    el_version: "4.1.2" # EssentialsL Version (Do not change)
 
     # Main Settings
     debug: false # Enable debug messages (true/false)
@@ -617,7 +617,7 @@ command /kms:
             send "<white>[<cyan>EssentialsL<white>] <yellow>[@debug] <aqua>Killing %{player}%" to console
         if {kys} is true:
             kill player
-            set death message to "%{player}% killed himself"
+            broadcast "%{player}% killed himself"
             
         if {kys} is false:
             send "<white>[<cyan>EssentialsL<white>]<red> This feature is disabled!"
@@ -764,18 +764,7 @@ on player move:
             broadcast "<white>[<cyan>EssentialsL<white>] <yellow>%player% is no longer AFK."
             execute console command "team leave AFK %player%"
 
-            if name of player is "Dimonium_":
-                set {_team_admin} to true
-                execute console command "team join ADMIN %player%"
-
-            else if player is op:
-                set {_team_moderator} to true
-                execute console command "team join MODERATOR %player%"
-
-            else:
-                set {_team_player} to true
-                send "<lime>Welcome back, <cyan><bold>%player%" to player
-                execute console command "team join PLAYER %player%"
+            setTeam(player)
 
 
 on chat:
@@ -785,18 +774,7 @@ on chat:
         broadcast "<white>[<cyan>EssentialsL<white>] <yellow>%player% is no longer AFK."
         execute console command "team leave AFK %player%"
 
-        if name of player is "Dimontium_":
-            set {_team_admin} to true
-            execute console command "team join ADMIN %player%"
-
-        else if player is op:
-            set {_team_moderator} to true
-            execute console command "team join MODERATOR %player%"
-
-        else:
-            set {_team_player} to true
-            send "<lime>Welcome back, <cyan><bold>%player%" to player
-            execute console command "team join PLAYER %player%"
+        setTeam(player)
 
 on damage of player:
     set {_attacker} to attacker
@@ -804,35 +782,13 @@ on damage of player:
     
     if {afk::%{_victim}%} is set:
         cancel event
-        send "That player is currently AFK!" to {_attacker}
+        send "<red><bold>That player is currently AFK!" to {_attacker}
         stop
 
 
 # Auto team system
 on join:
-    if {@debug} is true:
-        send "<white>[<cyan>EssentialsL<white>] <yellow>[@debug] <aqua>Assigning team for %{player}%" to console
-
-    if {teams} is false:
-        send "<white>[<cyan>EssentialsL<white>]<red> This feature is disabled!"
-        execute console command "team leave %player%"
-        stop    
-
-
-    execute console command "team leave %player%"
-
-    if name of player is "%{@owner_name}%":
-        execute console command "team join %{@team_1_name}% %player%"
-        send "<lime>Welcome back, <red><bold>Operator" to player
-        stop
-
-    if player is op:
-        execute console command "team join %{@team_2_name}% %player%"
-        send "<lime>Welcome back, <red><bold>Moderator" to player
-        stop
-    else:
-        execute console command "team join %{@team_3_name}% %player%"
-        send "<lime>Welcome back, <cyan><bold>%player%" to player
+    setTeam(player)
 
 
 
@@ -901,6 +857,31 @@ command /anarchy:
         wait 0.5 seconds
         send title "<red>Saving..." with subtitle "<yellow>Player has been transitioned to server 'SMP_2'"
         connect player to server "smp_2"  
+
+
+#=====================================================================================
+# FUNCTIONS
+#=====================================================================================
+function setTeam(player: player):
+    if {@debug} is true:
+        send "<white>[<cyan>EssentialsL<white>] <yellow>[@debug] <aqua>Assigning team for %{player}%" to console
+    
+    if {teams} is false:
+        execute console command "team leave %player%"
+        stop
+
+    if name of player is "%{@owner_name}%":
+        execute console command "team join %{@team_3_name}% %player%"
+        send "<lime>Welcome back, <red><bold>%{@owner_name}%" to player
+        stop
+
+    else if player is op:
+        execute console command "team join %{@team_2_name}% %player%"
+        send "<lime>Welcome back, <red><bold>%player%" to player
+        stop
+    else:
+        execute console command "team join %{@team_1_name}% %player%"
+        send "<lime>Welcome back, <cyan><bold>%player%" to player
 
 #End of the file
 #====================================================================================

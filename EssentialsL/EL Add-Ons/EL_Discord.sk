@@ -1,0 +1,92 @@
+on load:
+    if script "EssentialsL.sk" is loaded:
+        wait 1 second
+        apload()
+        
+    if plugin "vixio" is loaded:
+        wait 1 second
+        apload()
+
+        wait 1 second
+        send "<white>[<magenta>Discord<white>] <red>DISABLED - Unknown Critical Error Occured {CE1}" to ops and console
+        disable script "EL_Discord.sk"
+
+function apload():
+    send "<white>[<magenta>Discord<white>] <lime>Successfully loaded Discord" to ops and console
+
+
+
+
+
+# =========================
+# MC Login with Discord (Vixio)
+# Supports UUID and IP-based trust
+# =========================
+
+# ---------- /login command ----------
+command /login:
+    trigger:
+        if {logged::%player%} is true:
+            send "&aYou are already logged in."
+            stop
+
+        set {_code} to random integer between 100000 and 999999
+        set {login_code::%player%} to {_code}
+
+        send ""
+        send "<magenta>🔐 Minecraft Login"
+        send "Your login code: &e%{_code}%"
+        send "Send this code to the Discord bot in DM."
+        send ""
+
+# ---------- Discord DM verification ----------
+on message receive:
+    if event-channel is a private channel:
+        set {_msg} to message content
+
+        loop all players:
+            if {login_code::%loop-player%} is {_msg}:
+                # Mark as logged
+                set {logged::%loop-player%} to true
+                # Save UUID trust
+                set {trusted_uuid::%uuid of loop-player%} to true
+                # Save IP trust
+                set {trusted_ip::%ip of loop-player%} to uuid of loop-player
+                delete {login_code::%loop-player%}
+
+                send "&a✅ Login successful!" to loop-player
+                reply "&aYour Minecraft account is now linked!"
+
+# ---------- Auto-login on join ----------
+on join:
+    # Auto-login if UUID is trusted
+    if {trusted_uuid::%uuid of player%} is true:
+        set {logged::%player%} to true
+        send "&aWelcome back! Auto-logged via UUID."
+        stop
+
+    # Auto-login if IP is trusted
+    if {trusted_ip::%ip of player%} is set:
+        set {logged::%player%} to true
+        send "&aWelcome back! Auto-logged via IP."
+        stop
+
+    # Otherwise, require login
+    send "&cYou are not logged in."
+    send "&7Use &e/login &7to verify with Discord."
+
+# ---------- Prevent movement if not logged ----------
+on move:
+    if {logged::%player%} is not true:
+        cancel event
+
+# ---------- Optional: Auto-logout if IP changes ----------
+on join:
+    if {trusted_ip::%ip of player%} is set:
+        if {trusted_ip::%ip of player%} is not uuid of player:
+            delete {logged::%player%}
+            send "&cIP changed. Please /login again to verify with Discord."
+
+# ---------- Clean up on quit ----------
+on quit:
+    delete {login_code::%player%}

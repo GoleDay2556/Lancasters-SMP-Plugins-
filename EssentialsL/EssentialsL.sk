@@ -78,7 +78,7 @@ on load:
         send "[EssentialsL]       _\/\\\_____________\////////\\\_\////////\\\_\//\\///////___\/\\\___\/\\\____\/\\\_/\\__\/\\\__/\\\/////\\\_____\/\\\____\////////\\\_\/\\\_____________" to console
         send "[EssentialsL]        _\/\\\\\\\\\\\\\\\__/\\\\\\\\\\__/\\\\\\\\\\__\//\\\\\\\\\\_\/\\\___\/\\\____\//\\\\\___\/\\\_\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\\_\/\\\\\\\\\\\\\\\_" to console
         send "[EssentialsL]         _\///////////////__\//////////__\//////////____\//////////__\///____\///______\/////____\///___\////////\//__\/////////__\//////////__\///////////////__       Version: %{el_version}%" to console
-    
+        send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{@el_version}%" to ops and console
     else:
         send "<white>[<cyan>EssentialsL<white>] <lime>Successfully Loaded EssentialsL %{@el_version}%" to ops and console
 

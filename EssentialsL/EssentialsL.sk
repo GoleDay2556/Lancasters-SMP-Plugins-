@@ -642,8 +642,7 @@ command music <text>:
             play sound "music_disc.%arg-1%" with volume 99999 to player
             send "<white>[<cyan>EssentialsL<white>] <lime>Playing %arg-1%" to player
 
-            if arg-1 is "stop":
-                stop all sounds
+
             if arg-1 is "list":
                 send "Arguments: <eleven / thirteen / five / blocks / cat/ chirp"
                 send "/ creator / creator_music_box / far / lava_chicken / mall"
@@ -805,6 +804,10 @@ function sendServer(t: text, p: player):
     connect {_p} to server "%{_t}%" 
 
 function playMusic(m: text, p: player):
+    if {_m} is "stop":
+        send "<white>[<cyan>EssentialsL<white>] <lime>Stopped all sounds" {_p}
+        stop all sounds
+        stop
     play sound "music_disc.%{_m}%" to {_p}
     send "<white>[<cyan>EssentialsL<white>] <lime>Playing %{_m}%" to {_p}
 
